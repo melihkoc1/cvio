@@ -1,16 +1,33 @@
-import { AppProvider } from './store';
+import { AppProvider, useApp } from './store';
 import { Navbar } from './components/Navbar';
 import { AuthModal } from './components/AuthModal';
-import { UpgradeModal } from './components/UpgradeModal';
 import { LandingPage } from './pages/LandingPage';
+import { AppForm } from './pages/AppForm';
+import { GeneratingPage } from './pages/GeneratingPage';
+import { ResultPage } from './pages/ResultPage';
 
 function AppContent() {
+  const { currentPage, user, setShowAuthModal } = useApp();
+
+  const renderPage = () => {
+    if (currentPage === 'app' && !user.isLoggedIn) {
+      setTimeout(() => setShowAuthModal(true), 100);
+      return <LandingPage />;
+    }
+
+    switch (currentPage) {
+      case 'app': return <AppForm />;
+      case 'generating': return <GeneratingPage />;
+      case 'result': return <ResultPage />;
+      default: return <LandingPage />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-      <LandingPage />
+      {currentPage !== 'generating' && <Navbar />}
+      {renderPage()}
       <AuthModal />
-      <UpgradeModal />
     </div>
   );
 }

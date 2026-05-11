@@ -27,9 +27,9 @@ const popularSkills = [
 ];
 
 const templateInfo = [
-  { id: 'modern', name: 'Modern', desc: 'Blue sidebar', color: 'bg-blue-600' },
-  { id: 'classic', name: 'Classic', desc: 'Single column', color: 'bg-gray-800' },
-  { id: 'professional', name: 'Professional', desc: 'Dark header', color: 'bg-slate-900' },
+  { id: 'modern',       name: 'Modern',       desc: 'Blue sidebar',  color: 'bg-blue-600' },
+  { id: 'classic',      name: 'Classic',      desc: 'Single column', color: 'bg-gray-800' },
+  { id: 'professional', name: 'Professional', desc: 'Dark header',   color: 'bg-slate-900' },
 ] as const;
 
 function TemplateMiniPreview({ id }: { id: string }) {
@@ -585,19 +585,22 @@ function ATSScoreWidget({ cvData }: { cvData: CVData }) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-5">
       <button onClick={() => setExpanded(v => !v)} className="w-full flex items-center gap-3 cursor-pointer">
-        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-bold text-white flex-shrink-0 ${color === 'green' ? 'bg-green-500' : color === 'amber' ? 'bg-amber-400' : 'bg-red-400'
-          }`}>
+        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-bold text-white flex-shrink-0 ${
+          color === 'green' ? 'bg-green-500' : color === 'amber' ? 'bg-amber-400' : 'bg-red-400'
+        }`}>
           {score}
         </div>
         <div className="flex-1 text-left">
           <div className="flex items-center gap-2">
             <p className="text-sm font-bold text-gray-800">ATS Score</p>
-            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${color === 'green' ? 'bg-green-50 text-green-700' : color === 'amber' ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-600'
-              }`}>{label}</span>
+            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+              color === 'green' ? 'bg-green-50 text-green-700' : color === 'amber' ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-600'
+            }`}>{label}</span>
           </div>
           <div className="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden w-full">
-            <div className={`h-full rounded-full transition-all duration-700 ${color === 'green' ? 'bg-green-500' : color === 'amber' ? 'bg-amber-400' : 'bg-red-400'
-              }`} style={{ width: `${score}%` }} />
+            <div className={`h-full rounded-full transition-all duration-700 ${
+              color === 'green' ? 'bg-green-500' : color === 'amber' ? 'bg-amber-400' : 'bg-red-400'
+            }`} style={{ width: `${score}%` }} />
           </div>
         </div>
         <ChevronDown className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`} />
@@ -615,9 +618,10 @@ function ATSScoreWidget({ cvData }: { cvData: CVData }) {
               </div>
               <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${item.earned / item.max >= 0.7 ? 'bg-green-500' :
-                      item.earned / item.max >= 0.4 ? 'bg-amber-400' : 'bg-red-400'
-                    }`}
+                  className={`h-full rounded-full transition-all duration-500 ${
+                    item.earned / item.max >= 0.7 ? 'bg-green-500' :
+                    item.earned / item.max >= 0.4 ? 'bg-amber-400' : 'bg-red-400'
+                  }`}
                   style={{ width: `${(item.earned / item.max) * 100}%` }}
                 />
               </div>
@@ -743,642 +747,652 @@ export function AppForm() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 pt-20 pb-16">
       <div className="max-w-[1300px] mx-auto px-4">
-        <div>
+      <div>
 
-          {/* Header */}
-          <div className="text-center mb-8 pt-6">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-3 border border-blue-100">
-              <Zap className="w-3.5 h-3.5" />
-              AI-powered CV builder
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">Enter Your CV Information</h1>
-            <p className="text-gray-500 text-sm mt-1">Step {step + 1}/6 — {steps[step].subtitle}</p>
+        {/* Header */}
+        <div className="text-center mb-8 pt-6">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-3 border border-blue-100">
+            <Zap className="w-3.5 h-3.5" />
+            AI-powered CV builder
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Enter Your CV Information</h1>
+          <p className="text-gray-500 text-sm mt-1">Step {step + 1}/6 — {steps[step].subtitle}</p>
+        </div>
+
+        {/* Step Progress */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
+          {/* Steps */}
+          <div className="flex items-center justify-between mb-4 relative">
+            <div className="absolute top-5 left-5 right-5 h-0.5 bg-gray-100 -z-0" />
+            <div
+              className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-700 -z-0"
+              style={{ width: `${(step / 5) * (100 - (10 / 3))}%` }}
+            />
+            {steps.map((s, i) => (
+              <button
+                key={i}
+                onClick={() => i < step && setStep(i)}
+                disabled={i > step}
+                className="flex flex-col items-center gap-1.5 relative z-10 group"
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2 ${
+                  i < step
+                    ? 'bg-green-500 border-green-500 text-white shadow-sm shadow-green-200'
+                    : i === step
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-200 scale-110'
+                    : 'bg-white border-gray-200 text-gray-300'
+                } ${i < step ? 'cursor-pointer hover:scale-110' : ''}`}>
+                  {i < step ? (
+                    <CheckCircle2 className="w-5 h-5" />
+                  ) : (
+                    <s.icon className="w-4.5 h-4.5" />
+                  )}
+                </div>
+                <span className={`text-[10px] font-semibold hidden sm:block transition-colors ${
+                  i === step ? 'text-blue-600' : i < step ? 'text-green-600' : 'text-gray-300'
+                }`}>
+                  {s.title.split(' ')[0]}
+                </span>
+              </button>
+            ))}
           </div>
 
-          {/* Step Progress */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
-            {/* Steps */}
-            <div className="flex items-center justify-between mb-4 relative">
-              <div className="absolute top-5 left-5 right-5 h-0.5 bg-gray-100 -z-0" />
-              <div
-                className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-700 -z-0"
-                style={{ width: `${(step / 5) * (100 - (10 / 3))}%` }}
-              />
-              {steps.map((s, i) => (
-                <button
-                  key={i}
-                  onClick={() => i < step && setStep(i)}
-                  disabled={i > step}
-                  className="flex flex-col items-center gap-1.5 relative z-10 group"
-                >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2 ${i < step
-                      ? 'bg-green-500 border-green-500 text-white shadow-sm shadow-green-200'
-                      : i === step
-                        ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-200 scale-110'
-                        : 'bg-white border-gray-200 text-gray-300'
-                    } ${i < step ? 'cursor-pointer hover:scale-110' : ''}`}>
-                    {i < step ? (
-                      <CheckCircle2 className="w-5 h-5" />
-                    ) : (
-                      <s.icon className="w-4.5 h-4.5" />
-                    )}
-                  </div>
-                  <span className={`text-[10px] font-semibold hidden sm:block transition-colors ${i === step ? 'text-blue-600' : i < step ? 'text-green-600' : 'text-gray-300'
-                    }`}>
-                    {s.title.split(' ')[0]}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Progress bar */}
-            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 rounded-full transition-all duration-700"
-                style={{ width: `${((step + 1) / 6) * 100}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-1.5">
-              <span className="text-[10px] text-gray-400">Start</span>
-              <span className="text-[10px] text-blue-600 font-semibold">{completionPct}% complete</span>
-              <span className="text-[10px] text-gray-400">Done</span>
-            </div>
+          {/* Progress bar */}
+          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 rounded-full transition-all duration-700"
+              style={{ width: `${((step + 1) / 6) * 100}%` }}
+            />
           </div>
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[10px] text-gray-400">Start</span>
+            <span className="text-[10px] text-blue-600 font-semibold">{completionPct}% complete</span>
+            <span className="text-[10px] text-gray-400">Done</span>
+          </div>
+        </div>
 
-          {/* ATS Score */}
-          <ATSScoreWidget cvData={cvData} />
+        {/* ATS Score */}
+        <ATSScoreWidget cvData={cvData} />
 
-          {/* Form Card */}
-          <div className={`bg-white rounded-2xl border border-gray-100 shadow-sm transition-all duration-200 ${animating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
-            {/* Card Header */}
-            <div className="px-6 py-5 border-b border-gray-50">
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${step === 0 ? 'bg-blue-100 text-blue-600' :
-                    step === 1 ? 'bg-indigo-100 text-indigo-600' :
-                      step === 2 ? 'bg-violet-100 text-violet-600' :
-                        step === 3 ? 'bg-purple-100 text-purple-600' :
-                          step === 4 ? 'bg-pink-100 text-pink-600' :
-                            'bg-rose-100 text-rose-600'
-                  }`}>
-                  {(() => { const Icon = steps[step].icon; return <Icon className="w-5 h-5" />; })()}
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-gray-900">{steps[step].title}</h2>
-                  <p className="text-xs text-gray-400">{steps[step].subtitle}</p>
-                </div>
+        {/* Form Card */}
+        <div className={`bg-white rounded-2xl border border-gray-100 shadow-sm transition-all duration-200 ${animating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
+          {/* Card Header */}
+          <div className="px-6 py-5 border-b border-gray-50">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                step === 0 ? 'bg-blue-100 text-blue-600' :
+                step === 1 ? 'bg-indigo-100 text-indigo-600' :
+                step === 2 ? 'bg-violet-100 text-violet-600' :
+                step === 3 ? 'bg-purple-100 text-purple-600' :
+                step === 4 ? 'bg-pink-100 text-pink-600' :
+                'bg-rose-100 text-rose-600'
+              }`}>
+                {(() => { const Icon = steps[step].icon; return <Icon className="w-5 h-5" />; })()}
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">{steps[step].title}</h2>
+                <p className="text-xs text-gray-400">{steps[step].subtitle}</p>
               </div>
             </div>
+          </div>
 
-            <div className="p-6">
+          <div className="p-6">
 
-              {/* STEP 0: Personal Info */}
-              {step === 0 && (
-                <div className="space-y-5">
-                  <GuidedTipsBox step={0} show={showTips} onToggle={() => setShowTips(v => !v)} />
-                  {/* Photo Upload */}
-                  <PhotoUpload
-                    photo={cvData.personalInfo.photo || ''}
-                    onChange={photo => updatePersonalInfo({ photo })}
-                  />
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <FormField label="Full Name" required>
-                      <StyledInput
-                        placeholder="John Smith"
-                        value={cvData.personalInfo.fullName}
-                        onChange={e => updatePersonalInfo({ fullName: e.target.value })}
-                        error={errors.fullName}
-                      />
-                    </FormField>
-                    <FormField label="Email" required>
-                      <StyledInput
-                        type="email"
-                        placeholder="john@example.com"
-                        value={cvData.personalInfo.email}
-                        onChange={e => updatePersonalInfo({ email: e.target.value })}
-                        error={errors.email}
-                      />
-                    </FormField>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <FormField label="Phone" hint="optional">
-                      <StyledInput
-                        placeholder="+1 555 123 4567"
-                        value={cvData.personalInfo.phone}
-                        onChange={e => updatePersonalInfo({ phone: e.target.value })}
-                      />
-                    </FormField>
-                    <FormField label="LinkedIn URL" hint="optional">
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">linkedin.com/in/</span>
-                        <input
-                          placeholder="your-username"
-                          value={cvData.personalInfo.linkedin.replace('linkedin.com/in/', '')}
-                          onChange={e => updatePersonalInfo({ linkedin: e.target.value })}
-                          className="w-full pl-[130px] pr-3.5 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 hover:border-gray-300 transition-all"
-                        />
-                      </div>
-                    </FormField>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <FormField label="GitHub URL" hint="optional">
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">github.com/</span>
-                        <input
-                          placeholder="your-username"
-                          value={cvData.personalInfo.github.replace('github.com/', '')}
-                          onChange={e => updatePersonalInfo({ github: e.target.value })}
-                          className="w-full pl-[90px] pr-3.5 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 hover:border-gray-300 transition-all"
-                        />
-                      </div>
-                    </FormField>
-                    <div className="grid grid-cols-2 gap-2">
-                      <FormField label="City" hint="optional">
-                        <StyledInput placeholder="New York" value={cvData.personalInfo.city} onChange={e => updatePersonalInfo({ city: e.target.value })} />
-                      </FormField>
-                      <FormField label="Country" hint="optional">
-                        <StyledInput placeholder="USA" value={cvData.personalInfo.country} onChange={e => updatePersonalInfo({ country: e.target.value })} />
-                      </FormField>
-                    </div>
-                  </div>
-
-                  <FormField label="AI Summary Hint" hint="optional">
-                    <StyledTextarea
-                      placeholder="Briefly introduce yourself or list keywords... AI will rewrite this into a polished summary."
-                      rows={3}
-                      value={cvData.personalInfo.summary}
-                      onChange={e => updatePersonalInfo({ summary: e.target.value })}
-                      helperText="Leave blank and AI will generate your summary automatically"
+            {/* STEP 0: Personal Info */}
+            {step === 0 && (
+              <div className="space-y-5">
+                <GuidedTipsBox step={0} show={showTips} onToggle={() => setShowTips(v => !v)} />
+                {/* Photo Upload */}
+                <PhotoUpload
+                  photo={cvData.personalInfo.photo || ''}
+                  onChange={photo => updatePersonalInfo({ photo })}
+                />
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FormField label="Full Name" required>
+                    <StyledInput
+                      placeholder="John Smith"
+                      value={cvData.personalInfo.fullName}
+                      onChange={e => updatePersonalInfo({ fullName: e.target.value })}
+                      error={errors.fullName}
                     />
                   </FormField>
-
-                  <FormField label="Personal Statement" hint="optional — shown verbatim on CV">
-                    <StyledTextarea
-                      placeholder="Write a personal paragraph exactly as you want it to appear on your CV. AI will NOT modify this — it goes directly as-is."
-                      rows={4}
-                      value={cvData.personalInfo.personalStatement || ''}
-                      onChange={e => updatePersonalInfo({ personalStatement: e.target.value })}
-                      helperText="This appears on your CV exactly as written — great for a personal touch, goals statement, or unique narrative"
+                  <FormField label="Email" required>
+                    <StyledInput
+                      type="email"
+                      placeholder="john@example.com"
+                      value={cvData.personalInfo.email}
+                      onChange={e => updatePersonalInfo({ email: e.target.value })}
+                      error={errors.email}
                     />
                   </FormField>
-
-                  {/* Info tip */}
-                  <div className="flex items-start gap-3 bg-blue-50 rounded-xl p-4 border border-blue-100">
-                    <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-blue-700 space-y-1">
-                      <p><strong>Tip:</strong> Only Full Name and Email are required. Leave the rest blank — AI will fill in the gaps.</p>
-                      <p className="text-xs text-blue-600">Use <strong>AI Summary Hint</strong> for keywords/notes the AI will polish. Use <strong>Personal Statement</strong> for text you want verbatim on your CV.</p>
-                    </div>
-                  </div>
                 </div>
-              )}
 
-              {/* STEP 1: Experience & Projects */}
-              {step === 1 && (
-                <div className="space-y-5">
-                  <GuidedTipsBox step={1} show={showTips} onToggle={() => setShowTips(v => !v)} />
-                  {/* Encouragement banner */}
-                  <div className="flex items-start gap-3 bg-indigo-50 rounded-xl p-4 border border-indigo-100">
-                    <Sparkles className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-indigo-700 space-y-1">
-                      <p className="font-semibold">Not just jobs — add anything valuable</p>
-                      <p className="text-indigo-600 text-xs leading-relaxed">
-                        Personal projects, open-source work, freelance gigs, volunteering, internships — all count. Hiring managers love seeing initiative beyond a job title.
-                      </p>
-                    </div>
-                  </div>
-
-                  {cvData.experience.length === 0 && (
-                    <EmptyState icon={Briefcase} title="Nothing added yet" desc="Add work experience, a project, volunteer work, or freelance work below" />
-                  )}
-                  {cvData.experience.map((exp, i) => {
-                    const expType = exp.type || 'work';
-                    const typeConfig = {
-                      work: { label: 'Work', orgLabel: 'Company / Organization', roleLabel: 'Position / Title', orgPlaceholder: 'ABC Technologies Inc.', rolePlaceholder: 'Software Developer', ongoingLabel: 'Currently working here', descPlaceholder: 'E.g. Built REST APIs, led a team of 3, reduced load time by 40%' },
-                      project: { label: 'Project', orgLabel: 'Project Name', roleLabel: 'Your Role', orgPlaceholder: 'E.g. Portfolio Website', rolePlaceholder: 'Full-Stack Developer', ongoingLabel: 'Ongoing / still active', descPlaceholder: 'E.g. Built a full-stack e-commerce site with React & Node.js, deployed to AWS' },
-                      volunteer: { label: 'Volunteer', orgLabel: 'Organization', roleLabel: 'Your Role', orgPlaceholder: 'E.g. Red Cross', rolePlaceholder: 'Event Coordinator', ongoingLabel: 'Currently volunteering', descPlaceholder: 'E.g. Coordinated food distribution for 200+ families, managed 10 volunteers' },
-                      freelance: { label: 'Freelance', orgLabel: 'Client / Company', roleLabel: 'Service Provided', orgPlaceholder: 'E.g. Various clients', rolePlaceholder: 'UI/UX Designer', ongoingLabel: 'Currently active', descPlaceholder: 'E.g. Designed landing pages for 5+ clients, increased conversion rates by 25%' },
-                    }[expType];
-
-                    return (
-                      <div key={exp.id} className="border border-gray-200 rounded-2xl overflow-hidden group hover:border-indigo-200 transition-colors">
-                        {/* Card Header */}
-                        <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-lg bg-indigo-100 flex items-center justify-center">
-                              <Briefcase className="w-3.5 h-3.5 text-indigo-600" />
-                            </div>
-                            <span className="text-sm font-semibold text-gray-700">
-                              {exp.company || exp.position
-                                ? `${exp.position || 'Role'}${exp.company ? ` — ${exp.company}` : ''}`
-                                : `Entry ${i + 1}`}
-                            </span>
-                          </div>
-                          <button
-                            onClick={() => removeExperience(exp.id)}
-                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-red-50"
-                          >
-                            <X className="w-3.5 h-3.5" /> Remove
-                          </button>
-                        </div>
-                        <div className="p-5 space-y-4">
-                          {/* Type selector */}
-                          <div>
-                            <p className="text-xs font-semibold text-gray-500 mb-2">Type</p>
-                            <div className="flex gap-2 flex-wrap">
-                              {(['work', 'project', 'volunteer', 'freelance'] as const).map(t => (
-                                <button
-                                  key={t}
-                                  onClick={() => updateExperience(exp.id, { type: t })}
-                                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer capitalize ${expType === t
-                                      ? 'bg-indigo-600 text-white border-indigo-600'
-                                      : 'bg-white text-gray-500 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
-                                    }`}
-                                >
-                                  {t === 'work' ? 'Work' : t === 'project' ? 'Project' : t === 'volunteer' ? 'Volunteer' : 'Freelance'}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="grid sm:grid-cols-2 gap-4">
-                            <FormField label={typeConfig.orgLabel}>
-                              <StyledInput placeholder={typeConfig.orgPlaceholder} value={exp.company} onChange={e => updateExperience(exp.id, { company: e.target.value })} />
-                            </FormField>
-                            <FormField label={typeConfig.roleLabel}>
-                              <StyledInput placeholder={typeConfig.rolePlaceholder} value={exp.position} onChange={e => updateExperience(exp.id, { position: e.target.value })} />
-                            </FormField>
-                          </div>
-                          <div className="grid sm:grid-cols-2 gap-4">
-                            <FormField label="Start Date">
-                              <StyledInput type="month" value={exp.startDate} onChange={e => updateExperience(exp.id, { startDate: e.target.value })} />
-                            </FormField>
-                            <FormField label="End Date">
-                              <StyledInput
-                                type="month"
-                                value={exp.endDate}
-                                onChange={e => updateExperience(exp.id, { endDate: e.target.value })}
-                                disabled={exp.isCurrent}
-                              />
-                              <label className="flex items-center gap-2 mt-2 cursor-pointer group/check">
-                                <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${exp.isCurrent ? 'bg-indigo-500 border-indigo-500' : 'border-gray-300 group-hover/check:border-indigo-300'}`}>
-                                  {exp.isCurrent && <CheckCircle2 className="w-3 h-3 text-white" />}
-                                </div>
-                                <input type="checkbox" className="sr-only" checked={exp.isCurrent} onChange={e => updateExperience(exp.id, { isCurrent: e.target.checked, endDate: '' })} />
-                                <span className="text-sm text-gray-600">{typeConfig.ongoingLabel}</span>
-                              </label>
-                            </FormField>
-                          </div>
-                          <FormField label="What did you do?">
-                            <StyledTextarea
-                              placeholder={typeConfig.descPlaceholder}
-                              rows={3}
-                              value={exp.description}
-                              onChange={e => updateExperience(exp.id, { description: e.target.value })}
-                              helperText="AI will convert this into professional bullet points"
-                            />
-                          </FormField>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  <button
-                    onClick={addExperience}
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-indigo-200 rounded-2xl text-indigo-600 text-sm font-semibold hover:border-indigo-400 hover:bg-indigo-50 transition-all cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4" /> Add Entry
-                  </button>
-                  <div className="flex items-start gap-3 bg-amber-50 rounded-xl p-4 border border-amber-100">
-                    <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-amber-700">This step is optional. If you have nothing to add, click "Next" to continue.</p>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 2: Education */}
-              {step === 2 && (
-                <div className="space-y-5">
-                  <GuidedTipsBox step={2} show={showTips} onToggle={() => setShowTips(v => !v)} />
-                  {cvData.education.length === 0 && (
-                    <EmptyState icon={GraduationCap} title="No education added yet" desc="Add the schools or universities you graduated from" />
-                  )}
-                  {cvData.education.map((edu, i) => (
-                    <div key={edu.id} className="border border-gray-200 rounded-2xl overflow-hidden hover:border-violet-200 transition-colors">
-                      <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-violet-100 flex items-center justify-center">
-                            <GraduationCap className="w-3.5 h-3.5 text-violet-600" />
-                          </div>
-                          <span className="text-sm font-semibold text-gray-700">
-                            {edu.school || `Education ${i + 1}`}
-                          </span>
-                        </div>
-                        <button onClick={() => removeEducation(edu.id)} className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-red-50">
-                          <X className="w-3.5 h-3.5" /> Remove
-                        </button>
-                      </div>
-                      <div className="p-5 space-y-4">
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          <FormField label="School / University">
-                            <StyledInput placeholder="MIT" value={edu.school} onChange={e => updateEducation(edu.id, { school: e.target.value })} />
-                          </FormField>
-                          <FormField label="Field of Study">
-                            <StyledInput placeholder="Computer Science" value={edu.department} onChange={e => updateEducation(edu.id, { department: e.target.value })} />
-                          </FormField>
-                        </div>
-                        <div className="grid sm:grid-cols-3 gap-4">
-                          <FormField label="Degree">
-                            <StyledSelect value={edu.degree} onChange={e => updateEducation(edu.id, { degree: e.target.value })} options={degrees.map(d => ({ value: d, label: d }))} />
-                          </FormField>
-                          <FormField label="Graduation Year">
-                            <StyledInput placeholder="2023" value={edu.graduationYear} onChange={e => updateEducation(edu.id, { graduationYear: e.target.value })} />
-                          </FormField>
-                          <FormField label="GPA" hint="optional">
-                            <StyledInput placeholder="3.50 / 4.00" value={edu.gpa} onChange={e => updateEducation(edu.id, { gpa: e.target.value })} />
-                          </FormField>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    onClick={addEducation}
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-violet-200 rounded-2xl text-violet-600 text-sm font-semibold hover:border-violet-400 hover:bg-violet-50 transition-all cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4" /> Add Education
-                  </button>
-                </div>
-              )}
-
-              {/* STEP 3: Skills */}
-              {step === 3 && (
-                <div className="space-y-5">
-                  <GuidedTipsBox step={3} show={showTips} onToggle={() => setShowTips(v => !v)} />
-                  {/* Input */}
-                  <FormField label="Add Skill" hint="press Enter to add">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FormField label="Phone" hint="optional">
+                    <StyledInput
+                      placeholder="+1 555 123 4567"
+                      value={cvData.personalInfo.phone}
+                      onChange={e => updatePersonalInfo({ phone: e.target.value })}
+                    />
+                  </FormField>
+                  <FormField label="LinkedIn URL" hint="optional">
                     <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">linkedin.com/in/</span>
                       <input
-                        className="w-full pl-4 pr-12 py-2.5 border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 hover:border-gray-300 transition-all"
-                        placeholder="e.g. Excel, Python, Project Management..."
-                        value={skillInput}
-                        onChange={e => setSkillInput(e.target.value)}
-                        onKeyDown={handleSkillKeyDown}
+                        placeholder="your-username"
+                        value={cvData.personalInfo.linkedin.replace('linkedin.com/in/', '')}
+                        onChange={e => updatePersonalInfo({ linkedin: e.target.value })}
+                        className="w-full pl-[130px] pr-3.5 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 hover:border-gray-300 transition-all"
                       />
+                    </div>
+                  </FormField>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4"> 
+                  <FormField label="GitHub URL" hint="optional">
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">github.com/</span>
+                      <input
+                        placeholder="your-username"
+                        value={cvData.personalInfo.github.replace('github.com/', '')}
+                        onChange={e => updatePersonalInfo({ github: e.target.value })}
+                        className="w-full pl-[90px] pr-3.5 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 hover:border-gray-300 transition-all"
+                      />
+                    </div>
+                  </FormField>
+                  <div className="grid grid-cols-2 gap-2">
+                    <FormField label="City" hint="optional">
+                      <StyledInput placeholder="New York" value={cvData.personalInfo.city} onChange={e => updatePersonalInfo({ city: e.target.value })} />
+                    </FormField>
+                    <FormField label="Country" hint="optional">
+                      <StyledInput placeholder="USA" value={cvData.personalInfo.country} onChange={e => updatePersonalInfo({ country: e.target.value })} />
+                    </FormField>
+                  </div>
+                </div>
+
+                <FormField label="AI Summary Hint" hint="optional">
+                  <StyledTextarea
+                    placeholder="Briefly introduce yourself or list keywords... AI will rewrite this into a polished summary."
+                    rows={3}
+                    value={cvData.personalInfo.summary}
+                    onChange={e => updatePersonalInfo({ summary: e.target.value })}
+                    helperText="Leave blank and AI will generate your summary automatically"
+                  />
+                </FormField>
+
+                <FormField label="Personal Statement" hint="optional — shown verbatim on CV">
+                  <StyledTextarea
+                    placeholder="Write a personal paragraph exactly as you want it to appear on your CV. AI will NOT modify this — it goes directly as-is."
+                    rows={4}
+                    value={cvData.personalInfo.personalStatement || ''}
+                    onChange={e => updatePersonalInfo({ personalStatement: e.target.value })}
+                    helperText="This appears on your CV exactly as written — great for a personal touch, goals statement, or unique narrative"
+                  />
+                </FormField>
+
+                {/* Info tip */}
+                <div className="flex items-start gap-3 bg-blue-50 rounded-xl p-4 border border-blue-100">
+                  <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-blue-700 space-y-1">
+                    <p><strong>Tip:</strong> Only Full Name and Email are required. Leave the rest blank — AI will fill in the gaps.</p>
+                    <p className="text-xs text-blue-600">Use <strong>AI Summary Hint</strong> for keywords/notes the AI will polish. Use <strong>Personal Statement</strong> for text you want verbatim on your CV.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 1: Experience & Projects */}
+            {step === 1 && (
+              <div className="space-y-5">
+                <GuidedTipsBox step={1} show={showTips} onToggle={() => setShowTips(v => !v)} />
+                {/* Encouragement banner */}
+                <div className="flex items-start gap-3 bg-indigo-50 rounded-xl p-4 border border-indigo-100">
+                  <Sparkles className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-indigo-700 space-y-1">
+                    <p className="font-semibold">Not just jobs — add anything valuable</p>
+                    <p className="text-indigo-600 text-xs leading-relaxed">
+                      Personal projects, open-source work, freelance gigs, volunteering, internships — all count. Hiring managers love seeing initiative beyond a job title.
+                    </p>
+                  </div>
+                </div>
+
+                {cvData.experience.length === 0 && (
+                  <EmptyState icon={Briefcase} title="Nothing added yet" desc="Add work experience, a project, volunteer work, or freelance work below" />
+                )}
+                {cvData.experience.map((exp, i) => {
+                  const expType = exp.type || 'work';
+                  const typeConfig = {
+                    work:      { label: 'Work',      orgLabel: 'Company / Organization', roleLabel: 'Position / Title',   orgPlaceholder: 'ABC Technologies Inc.',  rolePlaceholder: 'Software Developer',       ongoingLabel: 'Currently working here',      descPlaceholder: 'E.g. Built REST APIs, led a team of 3, reduced load time by 40%' },
+                    project:   { label: 'Project',   orgLabel: 'Project Name',           roleLabel: 'Your Role',          orgPlaceholder: 'E.g. Portfolio Website',  rolePlaceholder: 'Full-Stack Developer',     ongoingLabel: 'Ongoing / still active',      descPlaceholder: 'E.g. Built a full-stack e-commerce site with React & Node.js, deployed to AWS' },
+                    volunteer: { label: 'Volunteer', orgLabel: 'Organization',           roleLabel: 'Your Role',          orgPlaceholder: 'E.g. Red Cross',         rolePlaceholder: 'Event Coordinator',        ongoingLabel: 'Currently volunteering',      descPlaceholder: 'E.g. Coordinated food distribution for 200+ families, managed 10 volunteers' },
+                    freelance: { label: 'Freelance', orgLabel: 'Client / Company',       roleLabel: 'Service Provided',   orgPlaceholder: 'E.g. Various clients',   rolePlaceholder: 'UI/UX Designer',           ongoingLabel: 'Currently active',            descPlaceholder: 'E.g. Designed landing pages for 5+ clients, increased conversion rates by 25%' },
+                  }[expType];
+
+                  return (
+                  <div key={exp.id} className="border border-gray-200 rounded-2xl overflow-hidden group hover:border-indigo-200 transition-colors">
+                    {/* Card Header */}
+                    <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-indigo-100 flex items-center justify-center">
+                          <Briefcase className="w-3.5 h-3.5 text-indigo-600" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">
+                          {exp.company || exp.position
+                            ? `${exp.position || 'Role'}${exp.company ? ` — ${exp.company}` : ''}`
+                            : `Entry ${i + 1}`}
+                        </span>
+                      </div>
                       <button
-                        onClick={() => { if (skillInput.trim()) { addSkill(skillInput.trim()); setSkillInput(''); } }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg hover:bg-purple-700 transition-colors cursor-pointer"
+                        onClick={() => removeExperience(exp.id)}
+                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-red-50"
                       >
-                        Add
+                        <X className="w-3.5 h-3.5" /> Remove
                       </button>
                     </div>
-                  </FormField>
-
-                  {/* Added skills */}
-                  {cvData.skills.length > 0 && (
-                    <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Added Skills ({cvData.skills.length})</p>
-                      <div className="flex flex-wrap gap-2 p-4 bg-purple-50 rounded-xl border border-purple-100 min-h-[60px]">
-                        {cvData.skills.map(skill => (
-                          <span key={skill} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-purple-700 border border-purple-200 rounded-lg text-sm font-medium shadow-sm">
-                            {skill}
-                            <button onClick={() => removeSkill(skill)} className="hover:text-red-500 transition-colors cursor-pointer">
-                              <X className="w-3.5 h-3.5" />
-                            </button>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {cvData.skills.length === 0 && (
-                    <div className="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 min-h-[60px] items-center justify-center">
-                      <p className="text-sm text-gray-400">No skills added yet. Type above and press Enter.</p>
-                    </div>
-                  )}
-
-                  {/* Popular skills */}
-                  <div className="border border-gray-100 rounded-xl overflow-hidden">
-                    <div className="flex border-b border-gray-100">
-                      {['Technical', 'Soft Skills', 'Industry'].map((cat, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setSelectedSkillCategory(i)}
-                          className={`flex-1 py-2.5 text-xs font-semibold transition-colors cursor-pointer ${selectedSkillCategory === i ? 'bg-purple-600 text-white' : 'text-gray-500 hover:bg-gray-50'
-                            }`}
-                        >
-                          {cat}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="p-4 flex flex-wrap gap-2">
-                      {popularSkills[selectedSkillCategory].map(s => (
-                        <button
-                          key={s}
-                          onClick={() => addSkill(s)}
-                          disabled={cvData.skills.includes(s)}
-                          className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all cursor-pointer ${cvData.skills.includes(s)
-                              ? 'bg-green-50 text-green-600 border-green-200 cursor-default'
-                              : 'border-gray-200 text-gray-600 hover:border-purple-400 hover:text-purple-600 hover:bg-purple-50'
-                            }`}
-                        >
-                          {cvData.skills.includes(s) ? '✓ ' : '+ '}{s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 4: Certificates */}
-              {step === 4 && (
-                <div className="space-y-5">
-                  <GuidedTipsBox step={4} show={showTips} onToggle={() => setShowTips(v => !v)} />
-                  <div className="flex items-start gap-3 bg-pink-50 rounded-xl p-4 border border-pink-100">
-                    <Award className="w-4 h-4 text-pink-500 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-pink-700">This step is completely optional. If you have no certifications, click "Next" to continue.</p>
-                  </div>
-                  {cvData.certificates.length === 0 && (
-                    <EmptyState icon={Award} title="No certificates added yet" desc="Add your AWS, Google, Microsoft, or other certifications" />
-                  )}
-                  {cvData.certificates.map((cert, i) => (
-                    <div key={cert.id} className="border border-gray-200 rounded-2xl overflow-hidden hover:border-pink-200 transition-colors">
-                      <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-lg bg-pink-100 flex items-center justify-center">
-                            <Award className="w-3.5 h-3.5 text-pink-600" />
-                          </div>
-                          <span className="text-sm font-semibold text-gray-700">{cert.name || `Certificate ${i + 1}`}</span>
-                        </div>
-                        <button onClick={() => removeCertificate(cert.id)} className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-red-50">
-                          <X className="w-3.5 h-3.5" /> Remove
-                        </button>
-                      </div>
-                      <div className="p-5">
-                        <div className="grid sm:grid-cols-3 gap-4">
-                          <FormField label="Certificate Name">
-                            <StyledInput placeholder="AWS Solutions Architect" value={cert.name} onChange={e => updateCertificate(cert.id, { name: e.target.value })} />
-                          </FormField>
-                          <FormField label="Issuing Organization">
-                            <StyledInput placeholder="Amazon Web Services" value={cert.institution} onChange={e => updateCertificate(cert.id, { institution: e.target.value })} />
-                          </FormField>
-                          <FormField label="Year">
-                            <StyledInput placeholder="2024" value={cert.year} onChange={e => updateCertificate(cert.id, { year: e.target.value })} />
-                          </FormField>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    onClick={addCertificate}
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-pink-200 rounded-2xl text-pink-600 text-sm font-semibold hover:border-pink-400 hover:bg-pink-50 transition-all cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4" /> Add Certificate
-                  </button>
-                </div>
-              )}
-
-              {/* STEP 5: Preferences */}
-              {step === 5 && (
-                <div className="space-y-6">
-                  {/* Language */}
-                  <FormField label="CV Language">
-                    <div className="grid grid-cols-2 gap-3">
-                      {([
-                        { v: 'en', flag: '🇬🇧', l: 'English' },
-                        { v: 'tr', flag: '🇹🇷', l: 'Turkish' },
-                        { v: 'fr', flag: '🇫🇷', l: 'French' },
-                        { v: 'es', flag: '🇪🇸', l: 'Spanish' },
-                        { v: 'de', flag: '🇩🇪', l: 'German' },
-                        { v: 'it', flag: '🇮🇹', l: 'Italian' },
-                        { v: 'pt', flag: '🇵🇹', l: 'Portuguese' },
-                        { v: 'nl', flag: '🇳🇱', l: 'Dutch' },
-                      ] as const).map(o => (
-                        <button
-                          key={o.v}
-                          onClick={() => updatePreferences({ language: o.v })}
-                          className={`flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${cvData.preferences.language === o.v
-                              ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-sm'
-                              : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                            }`}
-                        >
-                          <span className="text-xl">{o.flag}</span> {o.l}
-                          {cvData.preferences.language === o.v && <CheckCircle2 className="w-4 h-4" />}
-                        </button>
-                      ))}
-                    </div>
-                  </FormField>
-
-                  {/* Level & Sector */}
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <FormField label="Position Level">
-                      <div className="grid grid-cols-2 gap-2">
-                        {levels.map(l => (
-                          <button
-                            key={l}
-                            onClick={() => updatePreferences({ level: l })}
-                            className={`py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${cvData.preferences.level === l
-                                ? 'border-blue-500 bg-blue-50 text-blue-700'
-                                : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                    <div className="p-5 space-y-4">
+                      {/* Type selector */}
+                      <div>
+                        <p className="text-xs font-semibold text-gray-500 mb-2">Type</p>
+                        <div className="flex gap-2 flex-wrap">
+                          {(['work', 'project', 'volunteer', 'freelance'] as const).map(t => (
+                            <button
+                              key={t}
+                              onClick={() => updateExperience(exp.id, { type: t })}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer capitalize ${
+                                expType === t
+                                  ? 'bg-indigo-600 text-white border-indigo-600'
+                                  : 'bg-white text-gray-500 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
                               }`}
-                          >
-                            {l}
-                          </button>
-                        ))}
+                            >
+                              {t === 'work' ? 'Work' : t === 'project' ? 'Project' : t === 'volunteer' ? 'Volunteer' : 'Freelance'}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </FormField>
-                    <FormField label="Target Sector">
-                      <StyledSelect
-                        value={cvData.preferences.sector}
-                        onChange={e => updatePreferences({ sector: e.target.value })}
-                        options={sectors.map(s => ({ value: s, label: s }))}
-                      />
-                    </FormField>
-                  </div>
 
-                  {/* Template */}
-                  <FormField label="Choose Template">
-                    <div className="grid grid-cols-3 gap-3">
-                      {templateInfo.map(t => (
-                        <button
-                          key={t.id}
-                          onClick={() => updatePreferences({ template: t.id as any })}
-                          className={`rounded-2xl border-2 p-2 transition-all cursor-pointer text-left relative overflow-hidden ${cvData.preferences.template === t.id
-                              ? 'border-blue-500 shadow-md ring-2 ring-blue-100'
-                              : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                        >
-                          {cvData.preferences.template === t.id && (
-                            <div className="absolute top-1.5 left-1.5 z-10">
-                              <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                                <CheckCircle2 className="w-3 h-3 text-white" />
-                              </div>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <FormField label={typeConfig.orgLabel}>
+                          <StyledInput placeholder={typeConfig.orgPlaceholder} value={exp.company} onChange={e => updateExperience(exp.id, { company: e.target.value })} />
+                        </FormField>
+                        <FormField label={typeConfig.roleLabel}>
+                          <StyledInput placeholder={typeConfig.rolePlaceholder} value={exp.position} onChange={e => updateExperience(exp.id, { position: e.target.value })} />
+                        </FormField>
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <FormField label="Start Date">
+                          <StyledInput type="month" value={exp.startDate} onChange={e => updateExperience(exp.id, { startDate: e.target.value })} />
+                        </FormField>
+                        <FormField label="End Date">
+                          <StyledInput
+                            type="month"
+                            value={exp.endDate}
+                            onChange={e => updateExperience(exp.id, { endDate: e.target.value })}
+                            disabled={exp.isCurrent}
+                          />
+                          <label className="flex items-center gap-2 mt-2 cursor-pointer group/check">
+                            <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${exp.isCurrent ? 'bg-indigo-500 border-indigo-500' : 'border-gray-300 group-hover/check:border-indigo-300'}`}>
+                              {exp.isCurrent && <CheckCircle2 className="w-3 h-3 text-white" />}
                             </div>
-                          )}
-                          <div className="aspect-[3/4] rounded-xl overflow-hidden mb-2 shadow-sm border border-gray-100">
-                            <TemplateMiniPreview id={t.id} />
-                          </div>
-                          <div className="flex items-center gap-1.5 mb-0.5">
-                            <div className={`w-2 h-2 rounded-full ${t.color}`} />
-                            <p className="text-xs font-bold text-gray-900">{t.name}</p>
-                          </div>
-                          <p className="text-[10px] text-gray-400">{t.desc}</p>
-                        </button>
-                      ))}
+                            <input type="checkbox" className="sr-only" checked={exp.isCurrent} onChange={e => updateExperience(exp.id, { isCurrent: e.target.checked, endDate: '' })} />
+                            <span className="text-sm text-gray-600">{typeConfig.ongoingLabel}</span>
+                          </label>
+                        </FormField>
+                      </div>
+                      <FormField label="What did you do?">
+                        <StyledTextarea
+                          placeholder={typeConfig.descPlaceholder}
+                          rows={3}
+                          value={exp.description}
+                          onChange={e => updateExperience(exp.id, { description: e.target.value })}
+                          helperText="AI will convert this into professional bullet points"
+                        />
+                      </FormField>
                     </div>
-                  </FormField>
-
-                  {/* Final tip */}
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Zap className="w-4 h-4 text-blue-600" />
-                      <p className="text-sm font-bold text-blue-900">You're ready!</p>
-                    </div>
-                    <p className="text-sm text-blue-700 mb-4">Click below to generate your CV and download it as a PDF.</p>
-                    <button
-                      onClick={handleGenerate}
-                      className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-all cursor-pointer shadow-sm shadow-blue-200"
-                    >
-                      <FileText className="w-4 h-4" />
-                      Generate CV
-                    </button>
                   </div>
-                </div>
-              )}
-
-            </div>
-
-            {/* Navigation Footer */}
-            {step < 5 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t border-gray-50 bg-gray-50/50 rounded-b-2xl">
+                  );
+                })}
                 <button
-                  onClick={goPrev}
-                  disabled={step === 0}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${step === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-white hover:shadow-sm'
-                    }`}
+                  onClick={addExperience}
+                  className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-indigo-200 rounded-2xl text-indigo-600 text-sm font-semibold hover:border-indigo-400 hover:bg-indigo-50 transition-all cursor-pointer"
                 >
-                  <ChevronLeft className="w-4 h-4" /> Back
+                  <Plus className="w-4 h-4" /> Add Entry
                 </button>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400">{step + 1} / 6</span>
+                <div className="flex items-start gap-3 bg-amber-50 rounded-xl p-4 border border-amber-100">
+                  <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-amber-700">This step is optional. If you have nothing to add, click "Next" to continue.</p>
                 </div>
+              </div>
+            )}
 
+            {/* STEP 2: Education */}
+            {step === 2 && (
+              <div className="space-y-5">
+                <GuidedTipsBox step={2} show={showTips} onToggle={() => setShowTips(v => !v)} />
+                {cvData.education.length === 0 && (
+                  <EmptyState icon={GraduationCap} title="No education added yet" desc="Add the schools or universities you graduated from" />
+                )}
+                {cvData.education.map((edu, i) => (
+                  <div key={edu.id} className="border border-gray-200 rounded-2xl overflow-hidden hover:border-violet-200 transition-colors">
+                    <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-violet-100 flex items-center justify-center">
+                          <GraduationCap className="w-3.5 h-3.5 text-violet-600" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">
+                          {edu.school || `Education ${i + 1}`}
+                        </span>
+                      </div>
+                      <button onClick={() => removeEducation(edu.id)} className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-red-50">
+                        <X className="w-3.5 h-3.5" /> Remove
+                      </button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <FormField label="School / University">
+                          <StyledInput placeholder="MIT" value={edu.school} onChange={e => updateEducation(edu.id, { school: e.target.value })} />
+                        </FormField>
+                        <FormField label="Field of Study">
+                          <StyledInput placeholder="Computer Science" value={edu.department} onChange={e => updateEducation(edu.id, { department: e.target.value })} />
+                        </FormField>
+                      </div>
+                      <div className="grid sm:grid-cols-3 gap-4">
+                        <FormField label="Degree">
+                          <StyledSelect value={edu.degree} onChange={e => updateEducation(edu.id, { degree: e.target.value })} options={degrees.map(d => ({ value: d, label: d }))} />
+                        </FormField>
+                        <FormField label="Graduation Year">
+                          <StyledInput placeholder="2023" value={edu.graduationYear} onChange={e => updateEducation(edu.id, { graduationYear: e.target.value })} />
+                        </FormField>
+                        <FormField label="GPA" hint="optional">
+                          <StyledInput placeholder="3.50 / 4.00" value={edu.gpa} onChange={e => updateEducation(edu.id, { gpa: e.target.value })} />
+                        </FormField>
+                      </div>
+                    </div>
+                  </div>
+                ))}
                 <button
-                  onClick={goNext}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-all cursor-pointer shadow-sm shadow-blue-200 disabled:opacity-50"
+                  onClick={addEducation}
+                  className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-violet-200 rounded-2xl text-violet-600 text-sm font-semibold hover:border-violet-400 hover:bg-violet-50 transition-all cursor-pointer"
                 >
-                  {step === 4 ? 'Last Step' : 'Next'} <ChevronRight className="w-4 h-4" />
+                  <Plus className="w-4 h-4" /> Add Education
                 </button>
               </div>
             )}
+
+            {/* STEP 3: Skills */}
+            {step === 3 && (
+              <div className="space-y-5">
+                <GuidedTipsBox step={3} show={showTips} onToggle={() => setShowTips(v => !v)} />
+                {/* Input */}
+                <FormField label="Add Skill" hint="press Enter to add">
+                  <div className="relative">
+                    <input
+                      className="w-full pl-4 pr-12 py-2.5 border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 hover:border-gray-300 transition-all"
+                      placeholder="e.g. Excel, Python, Project Management..."
+                      value={skillInput}
+                      onChange={e => setSkillInput(e.target.value)}
+                      onKeyDown={handleSkillKeyDown}
+                    />
+                    <button
+                      onClick={() => { if (skillInput.trim()) { addSkill(skillInput.trim()); setSkillInput(''); } }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg hover:bg-purple-700 transition-colors cursor-pointer"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </FormField>
+
+                {/* Added skills */}
+                {cvData.skills.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Added Skills ({cvData.skills.length})</p>
+                    <div className="flex flex-wrap gap-2 p-4 bg-purple-50 rounded-xl border border-purple-100 min-h-[60px]">
+                      {cvData.skills.map(skill => (
+                        <span key={skill} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-purple-700 border border-purple-200 rounded-lg text-sm font-medium shadow-sm">
+                          {skill}
+                          <button onClick={() => removeSkill(skill)} className="hover:text-red-500 transition-colors cursor-pointer">
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {cvData.skills.length === 0 && (
+                  <div className="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 min-h-[60px] items-center justify-center">
+                    <p className="text-sm text-gray-400">No skills added yet. Type above and press Enter.</p>
+                  </div>
+                )}
+
+                {/* Popular skills */}
+                <div className="border border-gray-100 rounded-xl overflow-hidden">
+                  <div className="flex border-b border-gray-100">
+                    {['Technical', 'Soft Skills', 'Industry'].map((cat, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedSkillCategory(i)}
+                        className={`flex-1 py-2.5 text-xs font-semibold transition-colors cursor-pointer ${
+                          selectedSkillCategory === i ? 'bg-purple-600 text-white' : 'text-gray-500 hover:bg-gray-50'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="p-4 flex flex-wrap gap-2">
+                    {popularSkills[selectedSkillCategory].map(s => (
+                      <button
+                        key={s}
+                        onClick={() => addSkill(s)}
+                        disabled={cvData.skills.includes(s)}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
+                          cvData.skills.includes(s)
+                            ? 'bg-green-50 text-green-600 border-green-200 cursor-default'
+                            : 'border-gray-200 text-gray-600 hover:border-purple-400 hover:text-purple-600 hover:bg-purple-50'
+                        }`}
+                      >
+                        {cvData.skills.includes(s) ? '✓ ' : '+ '}{s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 4: Certificates */}
+            {step === 4 && (
+              <div className="space-y-5">
+                <GuidedTipsBox step={4} show={showTips} onToggle={() => setShowTips(v => !v)} />
+                <div className="flex items-start gap-3 bg-pink-50 rounded-xl p-4 border border-pink-100">
+                  <Award className="w-4 h-4 text-pink-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-pink-700">This step is completely optional. If you have no certifications, click "Next" to continue.</p>
+                </div>
+                {cvData.certificates.length === 0 && (
+                  <EmptyState icon={Award} title="No certificates added yet" desc="Add your AWS, Google, Microsoft, or other certifications" />
+                )}
+                {cvData.certificates.map((cert, i) => (
+                  <div key={cert.id} className="border border-gray-200 rounded-2xl overflow-hidden hover:border-pink-200 transition-colors">
+                    <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-lg bg-pink-100 flex items-center justify-center">
+                          <Award className="w-3.5 h-3.5 text-pink-600" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">{cert.name || `Certificate ${i + 1}`}</span>
+                      </div>
+                      <button onClick={() => removeCertificate(cert.id)} className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-red-50">
+                        <X className="w-3.5 h-3.5" /> Remove
+                      </button>
+                    </div>
+                    <div className="p-5">
+                      <div className="grid sm:grid-cols-3 gap-4">
+                        <FormField label="Certificate Name">
+                          <StyledInput placeholder="AWS Solutions Architect" value={cert.name} onChange={e => updateCertificate(cert.id, { name: e.target.value })} />
+                        </FormField>
+                        <FormField label="Issuing Organization">
+                          <StyledInput placeholder="Amazon Web Services" value={cert.institution} onChange={e => updateCertificate(cert.id, { institution: e.target.value })} />
+                        </FormField>
+                        <FormField label="Year">
+                          <StyledInput placeholder="2024" value={cert.year} onChange={e => updateCertificate(cert.id, { year: e.target.value })} />
+                        </FormField>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={addCertificate}
+                  className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-pink-200 rounded-2xl text-pink-600 text-sm font-semibold hover:border-pink-400 hover:bg-pink-50 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" /> Add Certificate
+                </button>
+              </div>
+            )}
+
+            {/* STEP 5: Preferences */}
+            {step === 5 && (
+              <div className="space-y-6">
+                {/* Language */}
+                <FormField label="CV Language">
+                  <div className="grid grid-cols-2 gap-3">
+                    {([
+                      { v: 'en', flag: '🇬🇧', l: 'English' },
+                      { v: 'tr', flag: '🇹🇷', l: 'Turkish' },
+                      { v: 'fr', flag: '🇫🇷', l: 'French' },
+                      { v: 'es', flag: '🇪🇸', l: 'Spanish' },
+                      { v: 'de', flag: '🇩🇪', l: 'German' },
+                      { v: 'it', flag: '🇮🇹', l: 'Italian' },
+                      { v: 'pt', flag: '🇵🇹', l: 'Portuguese' },
+                      { v: 'nl', flag: '🇳🇱', l: 'Dutch' },
+                    ] as const).map(o => (
+                      <button
+                        key={o.v}
+                        onClick={() => updatePreferences({ language: o.v })}
+                        className={`flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${
+                          cvData.preferences.language === o.v
+                            ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-sm'
+                            : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                        }`}
+                      >
+                        <span className="text-xl">{o.flag}</span> {o.l}
+                        {cvData.preferences.language === o.v && <CheckCircle2 className="w-4 h-4" />}
+                      </button>
+                    ))}
+                  </div>
+                </FormField>
+
+                {/* Level & Sector */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FormField label="Position Level">
+                    <div className="grid grid-cols-2 gap-2">
+                      {levels.map(l => (
+                        <button
+                          key={l}
+                          onClick={() => updatePreferences({ level: l })}
+                          className={`py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${
+                            cvData.preferences.level === l
+                              ? 'border-blue-500 bg-blue-50 text-blue-700'
+                              : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                          }`}
+                        >
+                          {l}
+                        </button>
+                      ))}
+                    </div>
+                  </FormField>
+                  <FormField label="Target Sector">
+                    <StyledSelect
+                      value={cvData.preferences.sector}
+                      onChange={e => updatePreferences({ sector: e.target.value })}
+                      options={sectors.map(s => ({ value: s, label: s }))}
+                    />
+                  </FormField>
+                </div>
+
+                {/* Template */}
+                <FormField label="Choose Template">
+                  <div className="grid grid-cols-3 gap-3">
+                    {templateInfo.map(t => (
+                      <button
+                        key={t.id}
+                        onClick={() => updatePreferences({ template: t.id as any })}
+                        className={`rounded-2xl border-2 p-2 transition-all cursor-pointer text-left relative overflow-hidden ${
+                          cvData.preferences.template === t.id
+                            ? 'border-blue-500 shadow-md ring-2 ring-blue-100'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        {cvData.preferences.template === t.id && (
+                          <div className="absolute top-1.5 left-1.5 z-10">
+                            <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                              <CheckCircle2 className="w-3 h-3 text-white" />
+                            </div>
+                          </div>
+                        )}
+                        <div className="aspect-[3/4] rounded-xl overflow-hidden mb-2 shadow-sm border border-gray-100">
+                          <TemplateMiniPreview id={t.id} />
+                        </div>
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <div className={`w-2 h-2 rounded-full ${t.color}`} />
+                          <p className="text-xs font-bold text-gray-900">{t.name}</p>
+                        </div>
+                        <p className="text-[10px] text-gray-400">{t.desc}</p>
+                      </button>
+                    ))}
+                  </div>
+                </FormField>
+
+                {/* Final tip */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Zap className="w-4 h-4 text-blue-600" />
+                    <p className="text-sm font-bold text-blue-900">You're ready!</p>
+                  </div>
+                  <p className="text-sm text-blue-700 mb-4">Click below to generate your CV and download it as a PDF.</p>
+                  <button
+                    onClick={handleGenerate}
+                    className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-all cursor-pointer shadow-sm shadow-blue-200"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Generate CV
+                  </button>
+                </div>
+              </div>
+            )}
+
           </div>
 
-          {/* Bottom padding */}
-          <div className="h-8" />
+          {/* Navigation Footer */}
+          {step < 5 && (
+            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-50 bg-gray-50/50 rounded-b-2xl">
+              <button
+                onClick={goPrev}
+                disabled={step === 0}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+                  step === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-white hover:shadow-sm'
+                }`}
+              >
+                <ChevronLeft className="w-4 h-4" /> Back
+              </button>
 
-          {/* Mobile preview button */}
-          <LivePreviewPanel cvData={cvData} />
-        </div>{/* end main content div */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400">{step + 1} / 6</span>
+              </div>
+
+              <button
+                onClick={goNext}
+                className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-all cursor-pointer shadow-sm shadow-blue-200 disabled:opacity-50"
+              >
+                {step === 4 ? 'Last Step' : 'Next'} <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom padding */}
+        <div className="h-8" />
+
+      {/* Mobile preview button */}
+      <LivePreviewPanel cvData={cvData} />
+      </div>{/* end main content div */}
       </div>{/* end max-w container */}
     </div>
   );

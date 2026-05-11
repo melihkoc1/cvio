@@ -170,13 +170,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
     persistUser(u);
     if (!cvData.personalInfo.fullName) {
-      persistCvData({
-        ...cvData, personalInfo: {
-          ...cvData.personalInfo,
-          fullName: firebaseUser.displayName || '',
-          email: firebaseUser.email || '',
-        }
-      });
+      persistCvData({ ...cvData, personalInfo: {
+        ...cvData.personalInfo,
+        fullName: firebaseUser.displayName || '',
+        email: firebaseUser.email || '',
+      }});
     }
     setShowAuthModal(false);
   }, [user, cvData]);
