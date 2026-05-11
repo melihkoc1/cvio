@@ -38,9 +38,11 @@ export interface Certificate {
   year: string;
 }
 
+export type TemplateId = 'modern' | 'classic' | 'professional';
+
 export interface Preferences {
-  language: 'tr' | 'en' | 'fr' | 'es' | 'de' | 'it' | 'pt' | 'nl';
-  template: 'modern' | 'classic' | 'minimal' | 'professional' | 'creative' | 'executive' | 'tech' | 'compact';
+  language: 'tr' | 'en';
+  template: TemplateId;
   sector: string;
   level: string;
 }
@@ -54,16 +56,6 @@ export interface CVData {
   preferences: Preferences;
 }
 
-export interface SavedCV {
-  id: string;
-  title: string;
-  data: CVData;
-  generatedContent: GeneratedContent | null;
-  template: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface GeneratedContent {
   cvContent: {
     summary: string;
@@ -72,17 +64,11 @@ export interface GeneratedContent {
     skills: string[];
     certificates: { name: string; institution: string; year: string }[];
   };
-  coverLetter?: string;
-  jobPosting?: string;
-  aiGenerated?: boolean;
-  aiError?: string;
 }
 
 export interface UserProfile {
   fullName: string;
   email: string;
-  plan: 'free' | 'pro';
-  cvCount: number;
   isLoggedIn: boolean;
   googleUid?: string;
   avatar?: string;
