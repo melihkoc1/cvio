@@ -1,19 +1,27 @@
-// Firebase config henüz ayarlanmadı — UI önizlemesi için stub kullanılıyor
-import type { User } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
 
-export const auth = null as any;
+const firebaseConfig = {
+  apiKey: 'xd',
+  authDomain: 'cvapp-f8d25.firebaseapp.com',
+  projectId: 'cvapp-f8d25',
+  storageBucket: 'cvapp-f8d25.firebasestorage.app',
+  messagingSenderId: '839965666924',
+  appId: '1:839965666924:web:aca67a6871d9aeab92f249',
+  measurementId: 'G-Y0YX9GCQNP',
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 export async function signInWithGoogle(): Promise<User> {
-  throw new Error('Firebase yapılandırılmadı');
+  const result = await signInWithPopup(auth, googleProvider);
+  return result.user;
 }
 
 export async function signOutUser(): Promise<void> {
-  // no-op
+  await signOut(auth);
 }
 
-export function onAuthStateChanged(_auth: any, callback: (user: User | null) => void) {
-  callback(null);
-  return () => {};
-}
-
-export type { User };
+export { onAuthStateChanged, type User };

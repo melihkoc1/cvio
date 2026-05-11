@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { signInWithGoogle, signOutUser } from './lib/firebase';
+import type { CVData, GeneratedContent, UserProfile, PersonalInfo, Experience, Education, Certificate, Preferences } from './types';
 
 function pathToPage(path: string): string {
   const p = path.replace(/^\//, '') || 'landing';
@@ -10,28 +12,20 @@ function pageToPath(page: string): string {
   if (page === 'landing') return '/';
   return '/' + page;
 }
-import { generateCVWithGemini } from './lib/gemini';
-import { signInWithGoogle, signOutUser } from './lib/firebase';
-import type { CVData, SavedCV, GeneratedContent, UserProfile, PersonalInfo, Experience, Education, Certificate, Preferences } from './types';
 
 interface AppState {
   user: UserProfile;
   cvData: CVData;
-  savedCVs: SavedCV[];
   generatedContent: GeneratedContent | null;
-  jobPosting: string;
   isGenerating: boolean;
   generatingStep: number;
-  generatingError: string | null;
   currentPage: string;
   showAuthModal: boolean;
-  showUpgradeModal: boolean;
 }
 
 interface AppContextType extends AppState {
   setCurrentPage: (page: string) => void;
   setUser: (user: UserProfile) => void;
-  setGeneratingError: (err: string | null) => void;
   login: (name: string, email: string) => void;
   loginWithGoogle: () => Promise<void>;
   logout: () => void;
@@ -48,15 +42,9 @@ interface AppContextType extends AppState {
   updateCertificate: (id: string, cert: Partial<Certificate>) => void;
   removeCertificate: (id: string) => void;
   updatePreferences: (prefs: Partial<Preferences>) => void;
-  setJobPosting: (text: string) => void;
-  generateCV: (withJob: boolean) => Promise<void>;
+  generateCV: () => Promise<void>;
   setGeneratedContent: (content: GeneratedContent | null) => void;
-  saveCV: (title: string) => void;
-  deleteCV: (id: string) => void;
-  loadCV: (id: string) => void;
   setShowAuthModal: (show: boolean) => void;
-  setShowUpgradeModal: (show: boolean) => void;
-  upgradeToPro: () => void;
 }
 
 const defaultPersonalInfo: PersonalInfo = {
@@ -77,7 +65,7 @@ const defaultCVData: CVData = {
 };
 
 const defaultUser: UserProfile = {
-  fullName: '', email: '', plan: 'free', cvCount: 0, isLoggedIn: false
+  fullName: '', email: '', isLoggedIn: false
 };
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -92,6 +80,45 @@ function generateId() {
   return Math.random().toString(36).substring(2, 10);
 }
 
+// Week 5 hedefi: bu fonksiyonu Gemini API çağrısı ile değiştir.
+function buildCVContent(data: CVData): GeneratedContent {
+  const skillsStr = data.skills.slice(0, 3).join(', ');
+  const expStr = data.experience.length > 0 ? data.experience[0].position : null;
+  const summary = data.personalInfo.summary && data.personalInfo.summary.split(' ').length >= 8
+    ? data.personalInfo.summary
+    : `${data.personalInfo.fullName || 'Candidate'} is a ${data.preferences.level}-level professional in ${data.preferences.sector}${expStr ? `, with hands-on experience as ${expStr}` : ''}. ${skillsStr ? `Proficient in ${skillsStr}.` : 'Eager to grow and contribute to ambitious teams.'}`;
+
+  const experience = data.experience.map(exp => {
+    const desc = exp.description || 'Worked on various projects and responsibilities';
+    const bullets = desc.split(/[.,;\n]/).map(s => s.trim()).filter(s => s.length > 5);
+    return {
+      company: exp.company,
+      position: exp.position,
+      startDate: exp.startDate,
+      endDate: exp.isCurrent ? 'Present' : exp.endDate,
+      bullets: bullets.length ? bullets : [desc]
+    };
+  });
+
+  const education = data.education.map(edu => ({
+    school: edu.school,
+    department: edu.department,
+    degree: edu.degree,
+    year: edu.graduationYear,
+    gpa: edu.gpa || undefined
+  }));
+
+  return {
+    cvContent: {
+      summary,
+      experience,
+      education,
+      skills: data.skills.length ? data.skills : ['Communication', 'Teamwork', 'Problem Solving'],
+      certificates: data.certificates.map(c => ({ name: c.name, institution: c.institution, year: c.year }))
+    }
+  };
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile>(() => {
     const s = localStorage.getItem('cvio_user');
@@ -101,18 +128,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const s = localStorage.getItem('cvio_cvdata');
     return s ? JSON.parse(s) : defaultCVData;
   });
-  const [savedCVs, setSavedCVs] = useState<SavedCV[]>(() => {
-    const s = localStorage.getItem('cvio_saved');
-    return s ? JSON.parse(s) : [];
-  });
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
-  const [jobPosting, setJobPosting] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatingStep, setGeneratingStep] = useState(0);
-  const [generatingError, setGeneratingError] = useState<string | null>(null);
   const [currentPage, setCurrentPageRaw] = useState(() => pathToPage(window.location.pathname));
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     const onPop = () => setCurrentPageRaw(pathToPage(window.location.pathname));
@@ -122,7 +142,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const persistUser = (u: UserProfile) => { setUser(u); localStorage.setItem('cvio_user', JSON.stringify(u)); };
   const persistCvData = (d: CVData) => { setCvData(d); localStorage.setItem('cvio_cvdata', JSON.stringify(d)); };
-  const persistSaved = (s: SavedCV[]) => { setSavedCVs(s); localStorage.setItem('cvio_saved', JSON.stringify(s)); };
 
   const setCurrentPage = useCallback((page: string) => {
     setCurrentPageRaw(page);
@@ -167,153 +186,90 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updatePersonalInfo = useCallback((info: Partial<PersonalInfo>) => {
-    const newData = { ...cvData, personalInfo: { ...cvData.personalInfo, ...info } };
-    persistCvData(newData);
+    persistCvData({ ...cvData, personalInfo: { ...cvData.personalInfo, ...info } });
   }, [cvData]);
 
   const addExperience = useCallback(() => {
     const newExp: Experience = { id: generateId(), type: 'work', company: '', position: '', startDate: '', endDate: '', isCurrent: false, description: '' };
-    const newData = { ...cvData, experience: [...cvData.experience, newExp] };
-    persistCvData(newData);
+    persistCvData({ ...cvData, experience: [...cvData.experience, newExp] });
   }, [cvData]);
 
   const updateExperience = useCallback((id: string, exp: Partial<Experience>) => {
-    const newData = { ...cvData, experience: cvData.experience.map(e => e.id === id ? { ...e, ...exp } : e) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, experience: cvData.experience.map(e => e.id === id ? { ...e, ...exp } : e) });
   }, [cvData]);
 
   const removeExperience = useCallback((id: string) => {
-    const newData = { ...cvData, experience: cvData.experience.filter(e => e.id !== id) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, experience: cvData.experience.filter(e => e.id !== id) });
   }, [cvData]);
 
   const addEducation = useCallback(() => {
-    const newEdu: Education = { id: generateId(), school: '', department: '', degree: 'Lisans', graduationYear: '', gpa: '' };
-    const newData = { ...cvData, education: [...cvData.education, newEdu] };
-    persistCvData(newData);
+    const newEdu: Education = { id: generateId(), school: '', department: '', degree: "Bachelor's", graduationYear: '', gpa: '' };
+    persistCvData({ ...cvData, education: [...cvData.education, newEdu] });
   }, [cvData]);
 
   const updateEducation = useCallback((id: string, edu: Partial<Education>) => {
-    const newData = { ...cvData, education: cvData.education.map(e => e.id === id ? { ...e, ...edu } : e) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, education: cvData.education.map(e => e.id === id ? { ...e, ...edu } : e) });
   }, [cvData]);
 
   const removeEducation = useCallback((id: string) => {
-    const newData = { ...cvData, education: cvData.education.filter(e => e.id !== id) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, education: cvData.education.filter(e => e.id !== id) });
   }, [cvData]);
 
   const addSkill = useCallback((skill: string) => {
     if (skill && !cvData.skills.includes(skill)) {
-      const newData = { ...cvData, skills: [...cvData.skills, skill] };
-      persistCvData(newData);
+      persistCvData({ ...cvData, skills: [...cvData.skills, skill] });
     }
   }, [cvData]);
 
   const removeSkill = useCallback((skill: string) => {
-    const newData = { ...cvData, skills: cvData.skills.filter(s => s !== skill) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, skills: cvData.skills.filter(s => s !== skill) });
   }, [cvData]);
 
   const addCertificate = useCallback(() => {
     const newCert: Certificate = { id: generateId(), name: '', institution: '', year: '' };
-    const newData = { ...cvData, certificates: [...cvData.certificates, newCert] };
-    persistCvData(newData);
+    persistCvData({ ...cvData, certificates: [...cvData.certificates, newCert] });
   }, [cvData]);
 
   const updateCertificate = useCallback((id: string, cert: Partial<Certificate>) => {
-    const newData = { ...cvData, certificates: cvData.certificates.map(c => c.id === id ? { ...c, ...cert } : c) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, certificates: cvData.certificates.map(c => c.id === id ? { ...c, ...cert } : c) });
   }, [cvData]);
 
   const removeCertificate = useCallback((id: string) => {
-    const newData = { ...cvData, certificates: cvData.certificates.filter(c => c.id !== id) };
-    persistCvData(newData);
+    persistCvData({ ...cvData, certificates: cvData.certificates.filter(c => c.id !== id) });
   }, [cvData]);
 
   const updatePreferences = useCallback((prefs: Partial<Preferences>) => {
-    const newData = { ...cvData, preferences: { ...cvData.preferences, ...prefs } };
-    persistCvData(newData);
+    persistCvData({ ...cvData, preferences: { ...cvData.preferences, ...prefs } });
   }, [cvData]);
 
-  const generateCV = useCallback(async (withJob: boolean) => {
+  const generateCV = useCallback(async () => {
     setIsGenerating(true);
     setGeneratingStep(0);
-    setGeneratingError(null);
+    setCurrentPageRaw('generating');
 
-    try {
-      setGeneratingStep(0);
-      await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 600));
+    setGeneratingStep(1);
+    await new Promise(r => setTimeout(r, 500));
+    setGeneratingStep(2);
+    await new Promise(r => setTimeout(r, 700));
+    setGeneratingStep(3);
+    await new Promise(r => setTimeout(r, 500));
 
-      if (withJob) {
-        setGeneratingStep(1);
-        await new Promise(r => setTimeout(r, 500));
-      }
-
-      setGeneratingStep(2);
-      const content = await generateCVWithGemini(cvData, withJob ? jobPosting : undefined);
-
-      setGeneratingStep(5);
-      await new Promise(r => setTimeout(r, 400));
-
-      setGeneratedContent(content);
-
-      const newUser = { ...user, cvCount: user.cvCount + 1 };
-      persistUser(newUser);
-
-      setIsGenerating(false);
-    } catch (error) {
-      console.error('API hatası:', error);
-      const errMsg = error instanceof Error ? error.message : String(error);
-      setGeneratingError(errMsg);
-      setIsGenerating(false);
-    }
-  }, [cvData, jobPosting, user]);
-
-  const saveCV = useCallback((title: string) => {
-    const newCV: SavedCV = {
-      id: generateId(),
-      title: title || new Date().toLocaleDateString('en-US'),
-      data: cvData,
-      generatedContent,
-      template: cvData.preferences.template,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    const newSaved = [newCV, ...savedCVs];
-    persistSaved(newSaved);
-  }, [cvData, generatedContent, savedCVs]);
-
-  const deleteCV = useCallback((id: string) => {
-    const newSaved = savedCVs.filter(cv => cv.id !== id);
-    persistSaved(newSaved);
-  }, [savedCVs]);
-
-  const loadCV = useCallback((id: string) => {
-    const cv = savedCVs.find(c => c.id === id);
-    if (cv) {
-      persistCvData(cv.data);
-      if (cv.generatedContent) setGeneratedContent(cv.generatedContent);
-    }
-  }, [savedCVs]);
-
-  const upgradeToPro = useCallback(() => {
-    const u = { ...user, plan: 'pro' as const };
-    persistUser(u);
-    setShowUpgradeModal(false);
-  }, [user]);
+    setGeneratedContent(buildCVContent(cvData));
+    setIsGenerating(false);
+    setCurrentPageRaw('result');
+  }, [cvData]);
 
   return (
     <AppContext.Provider value={{
-      user, cvData, savedCVs, generatedContent, jobPosting, isGenerating, generatingStep, generatingError, currentPage, showAuthModal, showUpgradeModal,
-      setCurrentPage, setUser, setGeneratingError, login, loginWithGoogle, logout, updatePersonalInfo,
+      user, cvData, generatedContent, isGenerating, generatingStep, currentPage, showAuthModal,
+      setCurrentPage, setUser, login, loginWithGoogle, logout, updatePersonalInfo,
       addExperience, updateExperience, removeExperience,
       addEducation, updateEducation, removeEducation,
       addSkill, removeSkill,
       addCertificate, updateCertificate, removeCertificate,
-      updatePreferences, setJobPosting, generateCV, setGeneratedContent,
-      saveCV, deleteCV, loadCV,
-      setShowAuthModal, setShowUpgradeModal, upgradeToPro
+      updatePreferences, generateCV, setGeneratedContent,
+      setShowAuthModal
     }}>
       {children}
     </AppContext.Provider>
