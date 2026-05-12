@@ -1,4 +1,10 @@
+/**
+ * Logo seçenekleri — birini beğenirseniz Navbar'a entegre edelim.
+ * Tarayıcıda görmek için geçici olarak LandingPage'e ekleyebilirsiniz.
+ */
+
 export function LogoA({ size = 40 }: { size?: number }) {
+  // Minimal document + checkmark
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="40" height="40" rx="10" fill="#1e293b"/>
@@ -13,6 +19,7 @@ export function LogoA({ size = 40 }: { size?: number }) {
 }
 
 export function LogoB({ size = 40 }: { size?: number }) {
+  // Bold "CV" monogram with gradient
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="40" height="40" rx="10" fill="url(#logoB_grad)"/>
@@ -30,9 +37,11 @@ export function LogoB({ size = 40 }: { size?: number }) {
 }
 
 export function LogoC({ size = 40 }: { size?: number }) {
+  // Abstract "C" shape — clean and modern
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="40" height="40" rx="12" fill="#0f172a"/>
+      <path d="M26 13C23.8 11.7 21.1 11 18.5 11C12.7 11 8 15.5 8 21C8 26.5 12.7 31 18.5 31C21.1 31 23.8 30.3 26 29" stroke="#3b82f6" strokeWidth="3" strokeLinecap="round"/>
       <path d="M26 13C23.8 11.7 21.1 11 18.5 11C12.7 11 8 15.5 8 21C8 26.5 12.7 31 18.5 31C21.1 31 23.8 30.3 26 29" stroke="url(#logoC_grad)" strokeWidth="3" strokeLinecap="round"/>
       <defs>
         <linearGradient id="logoC_grad" x1="8" y1="11" x2="26" y2="31">
@@ -47,6 +56,7 @@ export function LogoC({ size = 40 }: { size?: number }) {
 }
 
 export function LogoD({ size = 40 }: { size?: number }) {
+  // Document with spark — AI feel
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="40" height="40" rx="10" fill="#0ea5e9"/>
@@ -61,6 +71,7 @@ export function LogoD({ size = 40 }: { size?: number }) {
 }
 
 export function LogoE({ size = 40 }: { size?: number }) {
+  // Minimalist bracket + dot
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="40" height="40" rx="10" fill="#18181b"/>
@@ -68,5 +79,19 @@ export function LogoE({ size = 40 }: { size?: number }) {
       <path d="M26 10 L30 20 L26 30" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
       <circle cx="20" cy="20" r="2.5" fill="white"/>
     </svg>
+  );
+}
+
+// Preview component — geçici test için
+export function LogoPreview() {
+  return (
+    <div style={{ padding: 40, background: '#f8fafc', display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>
+      {[LogoA, LogoB, LogoC, LogoD, LogoE].map((Logo, i) => (
+        <div key={i} style={{ textAlign: 'center' }}>
+          <Logo size={56} />
+          <div style={{ marginTop: 8, fontSize: 12, color: '#64748b', fontWeight: 600 }}>Opsiyon {String.fromCharCode(65 + i)}</div>
+        </div>
+      ))}
+    </div>
   );
 }

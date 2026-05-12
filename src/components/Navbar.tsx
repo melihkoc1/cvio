@@ -1,4 +1,4 @@
-import { LogOut, Menu, X, ChevronRight, User } from 'lucide-react';
+import { LogOut, Menu, X, ChevronRight } from 'lucide-react';
 import { useApp } from '../store';
 import { useState, useEffect, useRef } from 'react';
 import { LogoE } from './LogoOptions';
@@ -43,7 +43,6 @@ export function Navbar() {
     }`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 py-4">
-          {/* Logo */}
           <button
             onClick={() => setCurrentPage('landing')}
             className="flex items-center gap-2 cursor-pointer group"
@@ -58,7 +57,6 @@ export function Navbar() {
             </span>
           </button>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {[
               { label: 'How It Works', action: () => scrollToSection('how-it-works') },
@@ -78,15 +76,9 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             {user.isLoggedIn ? (
               <>
-                {user.plan === 'pro' && (
-                  <span className="px-2.5 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full border border-amber-200">
-                    PRO ✓
-                  </span>
-                )}
                 <div className="relative" ref={avatarRef}>
                   <button
                     onClick={() => setAvatarOpen(v => !v)}
@@ -104,13 +96,6 @@ export function Navbar() {
                   {avatarOpen && (
                     <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-slate-100 py-1 z-50">
                       <button
-                        onClick={() => { setAvatarOpen(false); }}
-                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 cursor-pointer"
-                      >
-                        <User className="w-4 h-4 text-slate-400" /> Profile
-                      </button>
-                      <div className="my-1 border-t border-slate-100" />
-                      <button
                         onClick={() => { logout(); setAvatarOpen(false); }}
                         className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 cursor-pointer"
                       >
@@ -119,6 +104,12 @@ export function Navbar() {
                     </div>
                   )}
                 </div>
+                <button
+                  onClick={() => setCurrentPage('app')}
+                  className="flex items-center gap-1.5 bg-slate-900 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
+                >
+                  Create CV <ChevronRight className="w-4 h-4" />
+                </button>
               </>
             ) : (
               <>
@@ -140,7 +131,6 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Toggle */}
           <button
             className="md:hidden p-2 rounded-lg hover:bg-slate-100 cursor-pointer transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -150,7 +140,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 shadow-lg">
           <div className="px-6 py-4 space-y-1">
@@ -159,12 +148,6 @@ export function Navbar() {
               onClick={() => { scrollToSection('how-it-works'); setMobileOpen(false); }}
             >
               How It Works
-            </button>
-            <button
-              className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors"
-              onClick={() => { scrollToSection('features'); setMobileOpen(false); }}
-            >
-              Features
             </button>
             {user.isLoggedIn ? (
               <>
@@ -178,6 +161,12 @@ export function Navbar() {
                   )}
                   <span className="text-sm font-medium text-slate-700">{user.fullName}</span>
                 </div>
+                <button
+                  className="w-full text-center px-4 py-3 rounded-xl text-sm font-semibold bg-slate-900 text-white cursor-pointer mt-2"
+                  onClick={() => { setCurrentPage('app'); setMobileOpen(false); }}
+                >
+                  Create CV
+                </button>
                 <button
                   className="w-full text-center px-4 py-3 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 cursor-pointer transition-colors"
                   onClick={() => { logout(); setMobileOpen(false); }}

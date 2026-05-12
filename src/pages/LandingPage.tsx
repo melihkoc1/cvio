@@ -62,21 +62,12 @@ export function LandingPage() {
                 >
                   {user.isLoggedIn ? <>Create New CV <ArrowRight className="w-4 h-4" /></> : <>Get Started Free <ArrowRight className="w-4 h-4" /></>}
                 </button>
-                {user.isLoggedIn ? (
-                  <button
-                    onClick={() => setCurrentPage('dashboard')}
-                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all duration-200 cursor-pointer"
-                  >
-                    My CVs
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => scrollTo('how-it-works')}
-                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all duration-200 cursor-pointer"
-                  >
-                    How It Works?
-                  </button>
-                )}
+                <button
+                  onClick={() => scrollTo('how-it-works')}
+                  className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all duration-200 cursor-pointer"
+                >
+                  How It Works?
+                </button>
               </div>
 
               {/* Social proof */}
@@ -493,17 +484,17 @@ export function LandingPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={() => setCurrentPage('cover-letter')}
+                    onClick={handleStart}
                     className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-500 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-violet-900/40 cursor-pointer"
                   >
                     <FileText className="w-4 h-4" />
-                    Create Cover Letter
+                    Start Building
                   </button>
                   <button
-                    onClick={handleStart}
+                    onClick={() => scrollTo('features')}
                     className="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-600 transition-all duration-200 cursor-pointer"
                   >
-                    Create CV Too <ChevronRight className="w-4 h-4" />
+                    See Features <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -693,8 +684,8 @@ export function LandingPage() {
             </button>
 
             <div className="flex items-center gap-6 text-sm text-slate-500">
-              <button onClick={() => setCurrentPage('cover-letter')} className="hover:text-slate-300 transition-colors cursor-pointer">Cover Letter</button>
-              <button onClick={() => setCurrentPage('pricing')} className="hover:text-slate-300 transition-colors cursor-pointer">Pricing</button>
+              <button onClick={() => scrollTo('features')} className="hover:text-slate-300 transition-colors cursor-pointer">Features</button>
+              <button onClick={() => scrollTo('how-it-works')} className="hover:text-slate-300 transition-colors cursor-pointer">How It Works</button>
               <button className="hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button>
               <button className="hover:text-slate-300 transition-colors cursor-pointer">Contact</button>
             </div>
@@ -706,5 +697,3 @@ export function LandingPage() {
     </div>
   );
 }
-
-
