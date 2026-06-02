@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBZjssOoUHEQFabmo3PMncyBWGyGDdw9hk',
+  apiKey: '',
   authDomain: 'cvapp-f8d25.firebaseapp.com',
   projectId: 'cvapp-f8d25',
   storageBucket: 'cvapp-f8d25.firebasestorage.app',
