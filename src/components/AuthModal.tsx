@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { X, FileText, Loader2 } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
+import logoSvg from '../assets/logo.svg';
 import { useApp } from '../store';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 
 export function AuthModal() {
-  const { showAuthModal, setShowAuthModal, login, loginWithGoogle } = useApp();
+  const { showAuthModal, setShowAuthModal, login, loginWithGoogle, t } = useApp();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -26,10 +27,13 @@ export function AuthModal() {
     try {
       await loginWithGoogle();
     } catch (err: any) {
-      if (err?.code !== 'auth/popup-closed-by-user') {
-        setGoogleError('Google sign-in failed. Please try again.');
+      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') {
+        // kullanıcı popup'ı kapattı, hata gösterme
+      } else if (err?.code === 'auth/popup-blocked') {
+        setGoogleError(t('auth.popupBlocked'));
+      } else {
+        setGoogleError(t('auth.failed'));
       }
-    } finally {
       setGoogleLoading(false);
     }
   };
@@ -43,11 +47,11 @@ export function AuthModal() {
         </button>
 
         <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <FileText className="w-7 h-7 text-white" />
+          <div className="mx-auto mb-4 w-14 h-14">
+            <img src={logoSvg} alt="CVio" className="w-full h-full" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">Welcome to CVio</h2>
-          <p className="text-gray-500 mt-1">Start building your professional CV</p>
+          <h2 className="text-2xl font-bold text-gray-900">{t('auth.welcome')}</h2>
+          <p className="text-gray-500 mt-1">{t('auth.subtitle')}</p>
         </div>
 
         {/* Google Sign In */}
@@ -56,9 +60,7 @@ export function AuthModal() {
           disabled={googleLoading}
           className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-slate-200 rounded-xl hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed mb-4"
         >
-          {googleLoading ? (
-            <Loader2 className="w-5 h-5 animate-spin text-slate-500" />
-          ) : (
+          {googleLoading ? <Loader2 className="w-5 h-5 animate-spin text-slate-500" /> : (
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -67,31 +69,36 @@ export function AuthModal() {
             </svg>
           )}
           <span className="font-semibold text-slate-700">
-            {googleLoading ? 'Signing in...' : 'Continue with Google'}
+            {googleLoading ? t('auth.signingIn') : t('auth.google')}
           </span>
         </button>
 
         {googleError && (
-          <p className="text-red-500 text-sm text-center mb-4">{googleError}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4 text-center">
+            <p className="text-red-600 text-sm font-medium">{googleError}</p>
+            {googleError.includes('blocked') || googleError.includes('engellendi') ? (
+              <p className="text-gray-500 text-xs mt-1">{t('auth.tryChrome')}</p>
+            ) : null}
+          </div>
         )}
 
         {/* Divider */}
         <div className="flex items-center gap-3 mb-4">
           <div className="flex-1 h-px bg-slate-200" />
-          <span className="text-xs text-slate-400 font-medium">or continue with email</span>
+          <span className="text-xs text-slate-400 font-medium">{t('auth.orEmail')}</span>
           <div className="flex-1 h-px bg-slate-200" />
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            label="Full Name"
+            label={t('auth.fullName')}
             placeholder="John Smith"
             value={name}
             onChange={e => setName(e.target.value)}
             required
           />
           <Input
-            label="Email"
+            label={t('auth.email')}
             type="email"
             placeholder="john@example.com"
             value={email}
@@ -99,12 +106,12 @@ export function AuthModal() {
             required
           />
           <Button type="submit" className="w-full" size="lg">
-            Sign In
+            {t('auth.signIn')}
           </Button>
         </form>
 
         <p className="text-xs text-gray-400 text-center mt-4">
-          By signing in, you agree to our Terms of Service and Privacy Policy.
+          {t('auth.terms')}
         </p>
       </div>
     </div>

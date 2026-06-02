@@ -6,7 +6,7 @@ import {
 import { useApp } from '../store';
 
 export function LandingPage() {
-  const { user, setCurrentPage, setShowAuthModal } = useApp();
+  const { user, setCurrentPage, setShowAuthModal, t } = useApp();
 
   const handleStart = () => {
     if (user.isLoggedIn) setCurrentPage('app');
@@ -41,18 +41,16 @@ export function LandingPage() {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-700 bg-slate-800/60 text-slate-300 text-xs font-medium mb-6 sm:mb-8 backdrop-blur">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                AI-Powered · 8 Languages
+                {t('hero.badge')}
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
-                Professional CV<br />
-                <span className="text-blue-400">In Seconds</span>
+                {t('hero.title1')}<br />
+                <span className="text-blue-400">{t('hero.title2')}</span>
               </h1>
 
               <p className="mt-4 sm:mt-6 text-base sm:text-lg text-slate-400 leading-relaxed max-w-lg">
-                Enter your info, paste the job posting. Let AI write your{' '}
-                <span className="text-slate-200 font-medium">ATS-compatible CV</span> and{' '}
-                <span className="text-slate-200 font-medium">job-specific cover letter</span> for you.
+                {t('hero.desc')}
               </p>
 
               <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -60,14 +58,23 @@ export function LandingPage() {
                   onClick={handleStart}
                   className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-blue-900/40 cursor-pointer"
                 >
-                  {user.isLoggedIn ? <>Create New CV <ArrowRight className="w-4 h-4" /></> : <>Get Started Free <ArrowRight className="w-4 h-4" /></>}
+                  {user.isLoggedIn ? <>{t('hero.createNew')} <ArrowRight className="w-4 h-4" /></> : <>{t('hero.getStarted')} <ArrowRight className="w-4 h-4" /></>}
                 </button>
-                <button
-                  onClick={() => scrollTo('how-it-works')}
-                  className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all duration-200 cursor-pointer"
-                >
-                  How It Works?
-                </button>
+                {user.isLoggedIn ? (
+                  <button
+                    onClick={() => setCurrentPage('dashboard')}
+                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all duration-200 cursor-pointer"
+                  >
+                    {t('hero.myCVs')}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => scrollTo('how-it-works')}
+                    className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-all duration-200 cursor-pointer"
+                  >
+                    {t('hero.howItWorks')}
+                  </button>
+                )}
               </div>
 
               {/* Social proof */}
@@ -85,11 +92,11 @@ export function LandingPage() {
                       <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                     ))}
                   </div>
-                  <p className="text-slate-500 text-xs">2,400+ users · <span className="text-slate-300">4.9/5 rating</span></p>
+                  <p className="text-slate-500 text-xs">{t('hero.users')} · <span className="text-slate-300">{t('hero.rating')}</span></p>
                 </div>
                 <div className="h-8 w-px bg-slate-800" />
                 <p className="text-slate-500 text-xs">
-                  <span className="text-emerald-400 font-semibold">87%</span> more interview invitations
+                  <span className="text-emerald-400 font-semibold">87%</span> {t('hero.interviews')}
                 </p>
               </div>
             </div>
@@ -199,7 +206,7 @@ export function LandingPage() {
       <section className="py-8 sm:py-10 px-4 sm:px-6 bg-slate-50 border-y border-slate-200">
         <div className="max-w-5xl mx-auto">
           <p className="text-center text-xs font-semibold text-slate-400 uppercase tracking-widest mb-6">
-            Our users applied to these companies
+            {t('hero.logoBar')}
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4">
             {['Google', 'Amazon', 'Microsoft', 'Stripe', 'HubSpot', 'Salesforce', 'Apple'].map((co) => (
@@ -216,11 +223,11 @@ export function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-4 border border-blue-100">
-              Process
+              {t('hiw.badge')}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Professional CV in 3 Steps</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">{t('hiw.title')}</h2>
             <p className="mt-3 text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
-              No complex editors. No wasted hours. Just enter your info and let AI handle the rest.
+              {t('hiw.desc')}
             </p>
           </div>
 
@@ -232,8 +239,8 @@ export function LandingPage() {
               {
                 num: '01',
                 icon: ClipboardList,
-                title: 'Enter Your Info',
-                desc: 'Add your experience, education, and skills step by step. Even raw notes are fine — AI will polish them.',
+                title: t('hiw.step1.title'),
+                desc: t('hiw.step1.desc'),
                 color: 'blue',
                 bg: 'bg-blue-50',
                 border: 'border-blue-100',
@@ -243,8 +250,8 @@ export function LandingPage() {
               {
                 num: '02',
                 icon: Target,
-                title: 'Paste the Job Posting',
-                desc: 'Add the text of the job you want to apply for. AI analyzes keywords and optimizes your CV.',
+                title: t('hiw.step2.title'),
+                desc: t('hiw.step2.desc'),
                 color: 'violet',
                 bg: 'bg-violet-50',
                 border: 'border-violet-100',
@@ -254,8 +261,8 @@ export function LandingPage() {
               {
                 num: '03',
                 icon: Download,
-                title: 'Download & Apply',
-                desc: 'Download your ATS-compatible CV and job-specific cover letter as PDF. Ready in minutes.',
+                title: t('hiw.step3.title'),
+                desc: t('hiw.step3.desc'),
                 color: 'emerald',
                 bg: 'bg-emerald-50',
                 border: 'border-emerald-100',
@@ -281,7 +288,7 @@ export function LandingPage() {
               onClick={handleStart}
               className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl transition-all cursor-pointer"
             >
-              Start Now <ChevronRight className="w-4 h-4" />
+              {t('hiw.startNow')} <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -291,10 +298,10 @@ export function LandingPage() {
       <section className="py-12 sm:py-16 px-4 sm:px-6 bg-slate-900">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           {[
-            { value: '2,400+', label: 'Active Users', icon: Users },
-            { value: '87%', label: 'More Interviews', icon: TrendingUp },
-            { value: '5', label: 'Professional Templates', icon: FileText },
-            { value: '30s', label: 'Average Generation Time', icon: Zap },
+            { value: '2,400+', label: t('stats.users'), icon: Users },
+            { value: '87%', label: t('stats.interviews'), icon: TrendingUp },
+            { value: '5', label: t('stats.templates'), icon: FileText },
+            { value: '30s', label: t('stats.time'), icon: Zap },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className="flex justify-center mb-3">
@@ -316,42 +323,42 @@ export function LandingPage() {
             {/* Left text */}
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold uppercase tracking-wider mb-4 border border-slate-200">
-                Features
+                {t('feat.badge')}
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                Features That Make<br />Your Application Stand Out
+                {t('feat.title')}
               </h2>
               <p className="mt-4 text-slate-500 leading-relaxed">
-                Not just a CV editor — a career assistant that optimizes every step of your application.
+                {t('feat.desc')}
               </p>
 
               <div className="mt-10 space-y-6">
                 {[
                   {
                     icon: Shield,
-                    title: 'ATS-Compatible Format',
-                    desc: 'Passes through applicant tracking systems used by large companies (Workday, Greenhouse, Lever) seamlessly.',
+                    title: t('feat.ats.title'),
+                    desc: t('feat.ats.desc'),
                     color: 'text-blue-600',
                     bg: 'bg-blue-50',
                   },
                   {
                     icon: Target,
-                    title: 'Job-Specific Optimization',
-                    desc: 'AI analyzes keywords, requirements, and company culture from the posting to tailor your CV and cover letter.',
+                    title: t('feat.job.title'),
+                    desc: t('feat.job.desc'),
                     color: 'text-violet-600',
                     bg: 'bg-violet-50',
                   },
                   {
                     icon: Globe,
-                    title: 'Bilingual Support',
-                    desc: 'Create professional, fluent CVs in both English and Turkish.',
+                    title: t('feat.bilingual.title'),
+                    desc: t('feat.bilingual.desc'),
                     color: 'text-emerald-600',
                     bg: 'bg-emerald-50',
                   },
                   {
                     icon: BarChart2,
-                    title: 'Action-Oriented Language',
-                    desc: 'Transforms raw notes into powerful statements like "Led, increased by 40%, reached 3M users".',
+                    title: t('feat.action.title'),
+                    desc: t('feat.action.desc'),
                     color: 'text-amber-600',
                     bg: 'bg-amber-50',
                   },
@@ -372,12 +379,12 @@ export function LandingPage() {
             {/* Right — Feature cards */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: Award, title: 'Professional Templates', desc: '5 different design options', color: 'from-blue-500 to-blue-600' },
-                { icon: Zap, title: 'Ready in 30 Seconds', desc: 'AI-speed generation', color: 'from-amber-500 to-orange-500' },
-                { icon: FileText, title: 'PDF Download', desc: 'Instant high-quality PDF', color: 'from-emerald-500 to-teal-500' },
-                { icon: Users, title: 'Cover Letter', desc: 'Personalized writing', color: 'from-violet-500 to-purple-500' },
-                { icon: Globe, title: 'Multilingual', desc: 'EN & TR support', color: 'from-rose-500 to-pink-500' },
-                { icon: Shield, title: 'Secure Storage', desc: 'Save & edit your CVs', color: 'from-slate-600 to-slate-700' },
+                { icon: Award, title: t('feat.card1.title'), desc: t('feat.card1.desc'), color: 'from-blue-500 to-blue-600' },
+                { icon: Zap, title: t('feat.card2.title'), desc: t('feat.card2.desc'), color: 'from-amber-500 to-orange-500' },
+                { icon: FileText, title: t('feat.card3.title'), desc: t('feat.card3.desc'), color: 'from-emerald-500 to-teal-500' },
+                { icon: Users, title: t('feat.card4.title'), desc: t('feat.card4.desc'), color: 'from-violet-500 to-purple-500' },
+                { icon: Globe, title: t('feat.card5.title'), desc: t('feat.card5.desc'), color: 'from-rose-500 to-pink-500' },
+                { icon: Shield, title: t('feat.card6.title'), desc: t('feat.card6.desc'), color: 'from-slate-600 to-slate-700' },
               ].map((card, i) => (
                 <div
                   key={i}
@@ -400,10 +407,10 @@ export function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-slate-600 text-xs font-semibold uppercase tracking-wider mb-4 border border-slate-200">
-              User Reviews
+              {t('test.badge')}
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Real Users, Real Results
+              {t('test.title')}
             </h2>
           </div>
 
@@ -475,26 +482,25 @@ export function LandingPage() {
                   New Feature
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight mb-4">
-                  Cover Letter<br />
-                  <span className="text-violet-400">With AI in Seconds</span>
+                  {t('cl.title1')}<br />
+                  <span className="text-violet-400">{t('cl.title2')}</span>
                 </h2>
                 <p className="text-slate-400 text-base leading-relaxed mb-8">
-                  No CV needed. Paste the job posting, choose your tone — AI writes a personalized,
-                  company-specific, job-specific cover letter for you. Download as PDF or copy.
+                  {t('cl.desc')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={handleStart}
+                    onClick={() => setCurrentPage('cover-letter')}
                     className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-500 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-violet-900/40 cursor-pointer"
                   >
                     <FileText className="w-4 h-4" />
-                    Start Building
+                    {t('cl.create')}
                   </button>
                   <button
-                    onClick={() => scrollTo('features')}
+                    onClick={handleStart}
                     className="inline-flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-600 transition-all duration-200 cursor-pointer"
                   >
-                    See Features <ChevronRight className="w-4 h-4" />
+                    {t('cl.createCV')} <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -568,17 +574,17 @@ export function LandingPage() {
               Pricing
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Transparent and Simple Pricing
+              {t('price.title')}
             </h2>
-            <p className="mt-3 text-slate-500">Start free, upgrade when you need to.</p>
+            <p className="mt-3 text-slate-500">{t('price.desc')}</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Free */}
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-slate-300 transition-colors">
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-slate-900 mb-1">Free</h3>
-                <p className="text-sm text-slate-500">Perfect for trying it out</p>
+                <h3 className="text-lg font-bold text-slate-900 mb-1">{t('price.free')}</h3>
+                <p className="text-sm text-slate-500">{t('price.freeDesc')}</p>
               </div>
               <div className="flex items-end gap-1 mb-8">
                 <span className="text-5xl font-extrabold text-slate-900">$0</span>
@@ -586,12 +592,12 @@ export function LandingPage() {
               </div>
               <ul className="space-y-3 mb-8">
                 {[
-                  { text: '1 CV creation', ok: true },
-                  { text: '1 Cover Letter', ok: true },
-                  { text: '2 Templates', ok: true },
-                  { text: 'English & Turkish', ok: true },
-                  { text: 'PDF with watermark', ok: false },
-                  { text: 'Save CVs', ok: false },
+                  { text: t('price.free.1'), ok: true },
+                  { text: t('price.free.2'), ok: true },
+                  { text: t('price.free.3'), ok: true },
+                  { text: t('price.free.4'), ok: true },
+                  { text: t('price.free.5'), ok: false },
+                  { text: t('price.free.6'), ok: false },
                 ].map((item, i) => (
                   <li key={i} className={`flex items-center gap-2.5 text-sm ${item.ok ? 'text-slate-700' : 'text-slate-400 line-through'}`}>
                     <CheckCircle className={`w-4 h-4 flex-shrink-0 ${item.ok ? 'text-emerald-500' : 'text-slate-300'}`} />
@@ -603,7 +609,7 @@ export function LandingPage() {
                 onClick={handleStart}
                 className="w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 font-semibold hover:bg-slate-50 transition-colors cursor-pointer text-sm"
               >
-                Get Started Free
+                {t('price.getStarted')}
               </button>
             </div>
 
@@ -614,8 +620,8 @@ export function LandingPage() {
                 Recommended
               </div>
               <div className="mb-6 relative">
-                <h3 className="text-lg font-bold text-white mb-1">Pro</h3>
-                <p className="text-sm text-slate-500">For active job seekers</p>
+                <h3 className="text-lg font-bold text-white mb-1">{t('price.pro')}</h3>
+                <p className="text-sm text-slate-500">{t('price.proDesc')}</p>
               </div>
               <div className="flex items-end gap-1 mb-8 relative">
                 <span className="text-5xl font-extrabold text-white">$9</span>
@@ -623,13 +629,13 @@ export function LandingPage() {
               </div>
               <ul className="space-y-3 mb-8 relative">
                 {[
-                  'Unlimited CV creation',
-                  'Unlimited Cover Letters',
-                  '5 Premium Templates',
-                  'No watermark',
-                  'Save & edit CVs',
-                  'Job-specific optimization',
-                  'Priority support',
+                  t('price.pro.1'),
+                  t('price.pro.2'),
+                  t('price.pro.3'),
+                  t('price.pro.4'),
+                  t('price.pro.5'),
+                  t('price.pro.6'),
+                  t('price.pro.7'),
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-2.5 text-sm text-slate-300">
                     <CheckCircle className="w-4 h-4 flex-shrink-0 text-blue-400" />
@@ -641,7 +647,7 @@ export function LandingPage() {
                 onClick={handleStart}
                 className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors cursor-pointer text-sm relative"
               >
-                Upgrade to Pro — $9/mo
+                {t('price.upgrade')}
               </button>
             </div>
           </div>
@@ -655,18 +661,18 @@ export function LandingPage() {
             <FileText className="w-8 h-8 text-blue-400" />
           </div>
           <h2 className="text-4xl font-extrabold text-white tracking-tight mb-4">
-            Your Next Career Step<br />Starts Here
+            {t('cta.title')}
           </h2>
           <p className="text-slate-500 text-lg mb-8 max-w-xl mx-auto">
-            Join 2,400+ professionals. Build your CV, apply for your dream position.
+            {t('cta.desc')}
           </p>
           <button
             onClick={handleStart}
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-200 shadow-lg shadow-blue-900/30 cursor-pointer text-base"
           >
-            Get Started Free <ArrowRight className="w-5 h-5" />
+            {t('cta.button')} <ArrowRight className="w-5 h-5" />
           </button>
-          <p className="mt-4 text-slate-600 text-sm">No credit card required · Ready in 2 minutes</p>
+          <p className="mt-4 text-slate-600 text-sm">{t('cta.note')}</p>
         </div>
       </section>
 
@@ -684,17 +690,16 @@ export function LandingPage() {
             </button>
 
             <div className="flex items-center gap-6 text-sm text-slate-500">
-              <button onClick={() => scrollTo('features')} className="hover:text-slate-300 transition-colors cursor-pointer">Features</button>
-              <button onClick={() => scrollTo('how-it-works')} className="hover:text-slate-300 transition-colors cursor-pointer">How It Works</button>
-              <button className="hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button>
-              <button className="hover:text-slate-300 transition-colors cursor-pointer">Contact</button>
+              <button onClick={() => setCurrentPage('cover-letter')} className="hover:text-slate-300 transition-colors cursor-pointer">{t('footer.coverLetter')}</button>
+              <button onClick={() => setCurrentPage('pricing')} className="hover:text-slate-300 transition-colors cursor-pointer">{t('footer.pricing')}</button>
+              <button className="hover:text-slate-300 transition-colors cursor-pointer">{t('footer.privacy')}</button>
+              <button className="hover:text-slate-300 transition-colors cursor-pointer">{t('footer.contact')}</button>
             </div>
 
-            <p className="text-sm text-slate-600">© 2025 CVio. All rights reserved.</p>
+            <p className="text-sm text-slate-600">{t('footer.rights')}</p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
- 

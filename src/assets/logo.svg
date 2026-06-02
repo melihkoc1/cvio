@@ -1,0 +1,7 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="g" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3B82F6"></stop><stop offset="1" stop-color="#22D3EE"></stop></linearGradient>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#13243d"></stop><stop offset="1" stop-color="#0a1626"></stop></linearGradient>
+</defs>
+<rect x="2" y="2" width="60" height="60" rx="17" fill="url(#bg)"></rect><rect x="2.75" y="2.75" width="58.5" height="58.5" rx="16" fill="none" stroke="rgba(90,200,250,0.20)" stroke-width="1.5"></rect><path d="M20 47.5 H44" stroke="url(#g)" stroke-width="2.4" stroke-linecap="round" opacity="0.4"></path><path d="M18 44 L32 21 L46 44" fill="none" stroke="url(#g)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M27 44 L32 33.5 L37 44" fill="none" stroke="#22D3EE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M32,15.4 C32.576,18.424 32.576,18.424 35.6,19 C32.576,19.576 32.576,19.576 32,22.6 C31.424,19.576 31.424,19.576 28.4,19 C31.424,18.424 31.424,18.424 32,15.4 Z" fill="#22D3EE"></path>
+</svg>
